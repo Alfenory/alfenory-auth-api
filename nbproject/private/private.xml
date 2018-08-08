@@ -8,6 +8,8 @@
         <group name="iao"/>
         <group name="dms.alfenory.de"/>
         <group name="IAO"/>
-        <group name="BGB"/>
+        <group name="BGB">
+            <file>file:/C:/Users/alefen/Documents/NetBeansProjects/alfenoryplattform/alfenory-auth-api/composer.json</file>
+        </group>
     </open-files>
 </project-private>

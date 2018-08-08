@@ -138,4 +138,42 @@ class UserController {
     public static function getUsergroupBuffer() {
         return self::$usergroupBuffer;
     }
+
+    public static function getUser($request, $response, $args) {
+
+        if(UserController::has_privileg($request, $response, $args, "user.get")) {
+            $route = $request->getAttribute('route');
+            $id = $route->getArgument('membership_id');
+            
+            $usergroup_user_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('id' => $id));
+            $user_list = [];
+            $usergroup_id = "";
+
+            for($i=0;$i<count($usergroup_user_list);$i++) {
+                $usergroup_id = $usergroup_user_list[$i]->getUsergroupId();
+            }
+
+            $usergroup_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('usergroup_id' => $usergroup_id));
+            for($i=0;$i<count($usergroup_user_list);$i++) {
+                $user_id = $usergroup_user_list[$i]->getUserId();
+                $u_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\User')->findBy(array('id' => $user_id));
+                if(count($u_list) > 0) {
+                    $user_list[] = $u_list[0];
+                }
+            }
+
+            for($i=0;$i<count($user_list);$i++) {
+                $user_list[$i]->setSalt("");
+                $user_list[$i]->setPassword("");
+                $user_list[$i]->setSecurecode("");
+                $user_list[$i]->setActive("");
+            }
+            
+            return $response->withJson(Returnlib::get_success($user_list));
+        }
+        else {
+            return $response->withJson(Returnlib::no_privileg());
+        }
+
+    }
 }

@@ -11,8 +11,7 @@ class RoleController {
     }
     
     public static function get($request, $response, $args) {
-        $data = array('name' => 'Bob', 'age' => 40);
-        return $response->withJson($data);
+        return $response->withJson(array());
     }
     
     public static function update($request, $response, $args) {
