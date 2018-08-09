@@ -11,6 +11,7 @@
         "slim/slim": "^3.0",
         "doctrine/orm": "*"
     },
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": { "Alfenory\\Auth\\" : "src/" }
     },
