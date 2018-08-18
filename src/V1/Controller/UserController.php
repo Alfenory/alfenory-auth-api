@@ -14,6 +14,7 @@ class UserController {
     protected $container;
     public static $privilegBuffer;
     public static $usergroupBuffer;
+    public static $userId;
 
     public function __construct($container) {
         $this->container = $container;
@@ -82,9 +83,11 @@ class UserController {
         if(self::$privilegBuffer === null) {
         
             $user = \Alfenory\Auth\V1\Lib\Webservicelib::get_user_or_return_error($request, $response);
-
+            
             if($user !== null) {
-                
+            
+                self::$userId = $user->getId();
+
                 $memberhip_id = $args["membership_id"];
                 $membership_list = $entityManager->getRepository("\Alfenory\Auth\V1\Entity\UsergroupUser")->findBy(array("id" => $memberhip_id, "user_id" => $user->getId()));
                 
