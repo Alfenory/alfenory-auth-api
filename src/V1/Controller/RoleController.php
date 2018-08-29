@@ -24,14 +24,32 @@ class RoleController {
     }
     
     public static function update($request, $response, $args) {
-        return $response;
+        global $entityManager;
+        if(UserController::has_privileg($request, $response, $args, "role.push")) {
+            //TODO
+        }
+        else {
+            return $response->withJson(Returnlib::no_privileg());
+        }
     }
 
     public static function create($request, $response, $args) {
-        return $response;
+        global $entityManager;
+        if(UserController::has_privileg($request, $response, $args, "role.post")) {
+            //TODO
+        }
+        else {
+            return $response->withJson(Returnlib::no_privileg());
+        }
     }
     
     public static function delete($request, $response, $args) {
-        return $response;
+        global $entityManager;
+        if(UserController::has_privileg($request, $response, $args, "role.push")) {
+            //TODO
+        }
+        else {
+            return $response->withJson(Returnlib::no_privileg());
+        }
     }
 }
