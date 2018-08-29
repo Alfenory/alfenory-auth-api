@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="auth_roleprivileg")
  * @ORM\Entity
  **/
-class RolePrivileg {
+class RolePrivileg implements \JsonSerializable {
     /** @ORM\Id @ORM\Column(type="guid") @ORM\GeneratedValue(strategy="UUID") */
     private $id;
     public function getId() {
@@ -32,5 +32,10 @@ class RolePrivileg {
     }
     public function setPrivilegId($privileg) {
         $this->privileg = $privileg;
+    }
+
+    public function jsonSerialize() {
+        $vars = get_object_vars($this);
+        return $vars;
     }
 }
