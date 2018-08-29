@@ -2,6 +2,8 @@
 
 namespace Alfenory\Auth\V1\Controller;
 
+use Alfenory\Auth\V1\Lib\Returnlib;
+
 class RoleController {
     
     protected $container;
