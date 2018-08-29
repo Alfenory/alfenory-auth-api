@@ -33,12 +33,68 @@ class RolePrivilegController {
     }
     
     public static function update($request, $response, $args) {
+        global $config, $entityManager;
+    
+        if(UserController::has_privileg($request, $response, $args, "privileg.post")) {
+            $wslib = new Webservicelib();
+            
+            $privileg = $wslib->filter_string_request($request, "privileg");
+            $type = $wslib->filter_int_request($request, "type");
+            $article_category_id =  $wslib->filter_string_request($request, "article_category_id");
+            
+            if($wslib->print_error_if_needed($response) === false) {
+                $internal_id = $wslib->filter_string_request($request, "internal_id");
+                $active = $wslib->filter_int_request($request, "active");
+
+                $article = new \Alfenory\IAO\V1\Entity\Article();
+                $article->setName($name);
+                $article->setType($type);
+                $article->setArticleCategoryId($article_category_id);
+                $article->setInternalId($internal_id);
+                $article->setActive($active);
+                $article->setUsergroupId(UserController::$usergroupBuffer);
+                $entityManager->persist($article);
+                $entityManager->flush();
+
+                return $response->withJson(Returnlib::get_success($article));
+            }
+            else {
+                return $response->withJson(Returnlib::user_parameter_missing($wslib->error_list));
+            }
+        } 
+        else {
+            return $response->withJson(Returnlib::no_privileg());
+        }
+
         return $response;
     }
+
     
     public static function delete($request, $response, $args) {
-        return $response;
+        if(UserController::has_privileg($request, $response, $args, "roleprivileg.delete")) {
+
+        } 
+        else {
+            return $response->withJson(Returnlib::no_privileg());
+        }
     }
-    
-    
+
+    public static function priv_list($request, $response, $args) {
+        global $config;
+
+        if(UserController::has_privileg($request, $response, $args, "priv_list.get")) {
+            $priv_list = array();
+            $priv_list = array_merge($priv_list, InfoController::get_priv_list);
+            if(isset($config["modules"])) {
+                for ($i = 0; $i < count($config["modules"]); $i++) {
+                    $func_name = $config["modules"][$i]."\Controller\InfoController::priv_list";
+                    $priv_list = array_merge($priv_list, call_user_func($func_name));
+                }
+            }
+            return $response->withJson(Returnlib::get_success($priv_list));
+        } 
+        else {
+            return $response->withJson(Returnlib::no_privileg());
+        }
+    }
 }

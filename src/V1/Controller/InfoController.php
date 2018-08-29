@@ -20,5 +20,16 @@ class InfoController {
         $newResponse->getBody()->write($data);
         return $newResponse;
     }
+
+    public static function get_priv_list() {
+        $priv_list = array();
+        $priv_list[] = "priv_list.get";
+        $priv_list[] = "role.crud";
+        $priv_list[] = "roleprivileg.crud";
+        $priv_list[] = "usergroup.crud";
+        $priv_list[] = "usergroupuser.crud";
+
+        return $priv_list;
+    }
     
 }
