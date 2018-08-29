@@ -21,15 +21,18 @@ class RolePrivilegController {
             return $response;
         }
         
-        $role_id = $args["role_id"];
-        $privileg_list = $entityManager->getRepository('\Alfenory\Auth\V1\Entity\RolePrivileg')->findBy(array('role_id' => $role_id));
-        
-        $arr = Array();
-        foreach($privileg_list as $priv) {
-            $arr[] = $priv->getPrivileg();
+        $membership_id = $args["membership_id"];
+        $membership_list = $entityManager->getRepository('\Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('id' => $membership_id));
+        if(count($membership_id) === 1) {
+            $privileg_list = $entityManager->getRepository('\Alfenory\Auth\V1\Entity\RolePrivileg')->findBy(array('role_id' => $membership_list[0]->getRoleId()));
+            $arr = Array();
+            foreach($privileg_list as $priv) {
+                $arr[] = $priv->getPrivileg();
+            }
+            return $response->withJson(Returnlib::get_success($arr));
+        } else {
+            return $response->withJson(Returnlib::object_not_found("membership", $membership_id));
         }
-        
-        return $response->withJson(Returnlib::get_success($arr));
     }
     
     public static function update($request, $response, $args) {
