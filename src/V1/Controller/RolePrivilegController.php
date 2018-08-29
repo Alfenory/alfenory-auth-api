@@ -23,7 +23,7 @@ class RolePrivilegController {
         
         $membership_id = $args["membership_id"];
         $membership_list = $entityManager->getRepository('\Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('id' => $membership_id));
-        if(count($membership_id) === 1) {
+        if(count($membership_list) === 1) {
             $privileg_list = $entityManager->getRepository('\Alfenory\Auth\V1\Entity\RolePrivileg')->findBy(array('role_id' => $membership_list[0]->getRoleId()));
             $arr = Array();
             foreach($privileg_list as $priv) {
