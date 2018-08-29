@@ -13,7 +13,7 @@ class RoleController {
     public static function get($request, $response, $args) {
         global $entityManager;
         if(UserController::has_privileg($request, $response, $args, "role.get")) {
-            $role_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity')->findBy();
+            $role_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity')->findAll();
             return $response->withJson(Returnlib::get_success($role_list));
         }
         else {
