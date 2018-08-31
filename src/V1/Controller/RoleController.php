@@ -26,7 +26,16 @@ class RoleController {
     public static function update($request, $response, $args) {
         global $entityManager;
         if(UserController::has_privileg($request, $response, $args, "role.push")) {
-            //TODO
+            $name = $wslib->filter_string_request($request, "name");
+            if($wslib->print_error_if_needed($response) === false) {
+                $role = new \Alfenory\Auth\V1\Entity\Role();
+                $role->setName($name);
+                $entityManager->persist($role);
+                $entityManager->flush();
+                return $response->withJson(Returnlib::succes($role));
+            } else {
+                return $response->withJson(Returnlib::user_parameter_missing($wslib->error_list));
+            }
         }
         else {
             return $response->withJson(Returnlib::no_privileg());
