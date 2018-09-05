@@ -30,7 +30,7 @@ class RolePrivileg implements \JsonSerializable {
     public function getPrivileg() {
         return $this->privileg;
     }
-    public function setPrivilegId($privileg) {
+    public function setPrivileg($privileg) {
         $this->privileg = $privileg;
     }
 

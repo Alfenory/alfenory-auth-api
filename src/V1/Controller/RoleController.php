@@ -26,7 +26,6 @@ class RoleController {
     
     public static function update($request, $response, $args) {
         global $entityManager;
-        error_log("update");
         if(UserController::has_privileg($request, $response, $args, "role.put")) {
             $route = $request->getAttribute('route');
             $id = $route->getArgument('role_id');
@@ -70,7 +69,6 @@ class RoleController {
     
     public static function delete($request, $response, $args) {
         global $entityManager;
-        error_log("delete");
         if(UserController::has_privileg($request, $response, $args, "role.delete")) {
             $route = $request->getAttribute('route');
             $id = $route->getArgument('role_id');
