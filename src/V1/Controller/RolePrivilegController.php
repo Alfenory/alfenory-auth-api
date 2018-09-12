@@ -97,7 +97,7 @@ class RolePrivilegController {
             $role_id = $route->getArgument('role_id');
             $role_privileg = $route->getArgument('role_privileg');
             $role_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\RolePrivileg')->findBy(array('role_id' => $role_id, 'privileg' => $role_privileg));
-            if(count($role_list) === 1) {
+            if(count($role_list) > 0) {
                 $entityManager->remove($role_list[0]);
                 $entityManager->flush();
                 return $response->withJson(Returnlib::get_success());
