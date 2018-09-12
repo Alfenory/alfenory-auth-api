@@ -27,8 +27,12 @@ class InfoController {
         $priv_list[] = "role.crud";
         $priv_list[] = "roleprivileg.crud";
         $priv_list[] = "usergroup.crud";
+        $priv_list[] = "usergroup.handle_all";
+        $priv_list[] = "usergroup.handle_own";
+        $priv_list[] = "usergroup.handle_sub";
         $priv_list[] = "usergroupuser.crud";
-
+        $priv_list[] = "usergroupattribute.crud";
+        $priv_list[] = "user.crud";
         return $priv_list;
     }
     

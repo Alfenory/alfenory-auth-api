@@ -8,7 +8,7 @@ namespace Alfenory\Auth\V1\Entity;
  * @ORM\Table
  * @ORM\Entity
  **/
-class UsergroupAttribute {
+class UsergroupAttribute implements \JsonSerializable {
 
     /** @ORM\Id @ORM\Column(type="guid") @ORM\GeneratedValue(strategy="UUID") */
     private $id;

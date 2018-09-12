@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="auth_user")
  * @ORM\Entity
  **/
-class User {
+class User implements \JsonSerializable {
     /** @ORM\Id @ORM\Column(type="guid") @ORM\GeneratedValue(strategy="UUID") */
     private $id;
     public function getId() {

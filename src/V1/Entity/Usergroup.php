@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="auth_usergroup")
  * @ORM\Entity
  **/
-class Usergroup {
+class Usergroup implements \JsonSerializable {
 
     /** @ORM\Id @ORM\Column(type="guid") @ORM\GeneratedValue(strategy="UUID") */
     private $id;
