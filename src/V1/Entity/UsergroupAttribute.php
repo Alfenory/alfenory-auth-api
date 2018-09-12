@@ -42,5 +42,10 @@ class UsergroupAttribute implements \JsonSerializable {
     public static function remove_all($usergroup_id) {
         usergroup_attribute::remove_from_instance(new usergroup_attribute, "`usergroup_id` = $usergroup_id");
     }
+
+    public function jsonSerialize() {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
     
 }

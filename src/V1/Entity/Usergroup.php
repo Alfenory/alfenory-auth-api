@@ -88,5 +88,10 @@ class Usergroup implements \JsonSerializable {
         usergroup_wrapper_buffer::remove_buffer();
         parent::insert();
     }
+
+    public function jsonSerialize() {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
     
 }

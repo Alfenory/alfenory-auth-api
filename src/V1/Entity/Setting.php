@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="auth_setting")
  * @ORM\Entity
  **/
-class setting {
+class Setting implements \JsonSerializable {
     /** @ORM\Id @ORM\Column(type="guid") @ORM\GeneratedValue(strategy="UUID") */
     private $id;
     public function getId() {
@@ -32,4 +32,9 @@ class setting {
     public function getUserId() { return $this->user_id; }
     public function setUserId($usergroup_id) { $this->user_id = $usergroup_id; }
     
+    public function jsonSerialize() {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
+
 }
