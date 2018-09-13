@@ -1,6 +1,6 @@
 {
     "name": "alfenory_auth_api",
-    "version": "1.0.44",
+    "version": "1.0.45",
     "license": "gpl",
     "description": "alfenory plattform authorisation api",
     "keywords": [
