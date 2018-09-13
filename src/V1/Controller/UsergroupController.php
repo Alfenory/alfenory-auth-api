@@ -32,8 +32,10 @@ class UsergroupController {
     
     public static function get_submandatory($request, $response, $args) {
         global $entityManager;
-        if(UserController::has_privileg($request, $response, $args, "usergroup.handle_sub")) {
-            $usergroup_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Usergroup')->findBy(array("usergroup_id" => UserController::$usergroupBuffer));
+        $route = $request->getAttribute('route');
+        $usergroup_id = $route->getArgument('usergroup_id');
+        if(self::has_usergroup_priv($request, $response, $args, $usergroup_id) === true) {
+            $usergroup_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Usergroup')->findBy(array("usergroup_id" => $usergroup_id));
             return $response->withJson(Returnlib::get_success($usergroup_list));
         } else {
             return $response->withJson(Returnlib::no_privileg());
