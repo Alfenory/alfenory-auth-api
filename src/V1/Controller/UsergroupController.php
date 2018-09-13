@@ -18,7 +18,8 @@ class UsergroupController {
 
         if(UserController::has_privileg($request, $response, $args, "usergroup.handle_all")) {
             $usergroup_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Usergroup')->findBy(array("usergroup_id" => ''));
-            return $response->withJson(Returnlib::get_success($usergroup_list));
+            $usergroup_list1 = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Usergroup')->findBy(array("usergroup_id" => NULL));
+            return $response->withJson(Returnlib::get_success(array_merge($usergroup_list, $usergroup_list1)));
         } else {
             if(UserController::has_privileg($request, $response, $args, "usergroup.handle_own")) {
                 $usergroup_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Usergroup')->findBy(array("id" => UserController::usergroupBuffer));
