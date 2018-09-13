@@ -103,7 +103,7 @@ class UsergroupController {
         global $entityManager;
         if(UserController::has_privileg($request, $response, $args, "usergroup.put")) {
             $wslib = new Webservicelib();
-            $name = $wslib->filter_string_request($request, "name");
+            $name = $request->getParam('name');
             if($wslib->print_error_if_needed($response) === false) {
                 $route = $request->getAttribute('route');
                 $usergroup_id = $route->getArgument('usergroup_id');
