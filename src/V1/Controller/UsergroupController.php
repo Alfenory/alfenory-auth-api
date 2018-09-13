@@ -105,6 +105,24 @@ class UsergroupController {
             $wslib = new Webservicelib();
             $name = $wslib->filter_string_request($request, "name");
             if($wslib->print_error_if_needed($response) === false) {
+                $route = $request->getAttribute('route');
+                $usergroup_id = $route->getArgument('usergroup_id');
+                $usergroup_list = $entityManager->getRepository('\Alfenory\Auth\V1\Entity\Usergroup')->findBy(array('id' => $usergroup_id));
+                if (count($usergroup_list) > 0) {
+                    if (self::has_usergroup_priv($request, $response, $args, $usergroup_id) === true) {
+                        $usergroup = $usergroup_list[0];
+                        $usergroup->name = $name;
+                        $entityManager->persist($usergroup);
+                        $entityManager->flush();
+                    } else {
+                        return $response->withJson(Returnlib::no_privileg());   
+                    }
+                } else {
+                    return $response->withJson(Returnlib::object_not_found("mandatory", $usergroup_id));  
+                }
+                
+            } else {
+                return $response->withJson(Returnlib::user_parameter_missing($wslib->error_list));
             }
         } else {
             return $response->withJson(Returnlib::no_privileg());    
