@@ -24,7 +24,7 @@ class Usergroup implements \JsonSerializable {
     public function getName() { return $this->name; }
     public function setName($name) { $this->name = $name; }
     
-    /** @ORM\Column(type="string",length=255) */
+    /** @ORM\Column(type="string",length=36) */
     private $usergroup_id;
     public function getUsergroupId() { return $this->usergroup_id; }
     public function setUsergroupId($usergroup_id) { $this->usergroup_id = $usergroup_id; }
