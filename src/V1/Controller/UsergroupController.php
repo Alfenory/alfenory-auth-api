@@ -102,7 +102,10 @@ class UsergroupController {
     public static function update($request, $response, $args) {
         global $entityManager;
         if(UserController::has_privileg($request, $response, $args, "usergroup.put")) {
-            
+            $wslib = new Webservicelib();
+            $name = $wslib->filter_string_request($request, "name");
+            if($wslib->print_error_if_needed($response) === false) {
+            }
         } else {
             return $response->withJson(Returnlib::no_privileg());    
         }
