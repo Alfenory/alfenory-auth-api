@@ -19,7 +19,7 @@ class UsergroupRoute {
                     $this->put("/{attribute_id}", \Alfenory\Auth\V1\Controller\UsergroupAttribute::class.":update");
                     $this->delete("/{attribute_id}", \Alfenory\Auth\V1\Controller\UsergroupAttribute::class.":delete");
                 });
-                $this->group('/{usergroup_id}/user', function () {
+                $this->group('/user', function () {
                     $this->get("/", \Alfenory\Auth\V1\Controller\UsergroupUser::class.":get");
                     $this->post("/", \Alfenory\Auth\V1\Controller\UsergroupUser::class.":create");
                     $this->group('/{user_id}', function () {
@@ -32,6 +32,5 @@ class UsergroupRoute {
                 });
             });
         });
-        
     }
 }
