@@ -77,6 +77,8 @@ class UsergroupController {
                 if($usergroup_id !== '') {
                     if(self::has_usergroup_priv($request, $response, $args, $usergroup_id) === true) {
                         $usergroup->setUsergroupId($usergroup_id);
+                        $entityManager->persist($usergroup);
+                        $entityManager->flush();
                         return $response->withJson(Returnlib::get_success($usergroup));
                     }
                     else {
@@ -84,6 +86,8 @@ class UsergroupController {
                     }
                 }
                 else {
+                    $entityManager->persist($usergroup);
+                    $entityManager->flush();
                     return $response->withJson(Returnlib::get_success($usergroup));
                 }
             }
