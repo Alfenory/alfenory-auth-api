@@ -111,7 +111,7 @@ class UsergroupController {
                 if (count($usergroup_list) > 0) {
                     if (self::has_usergroup_priv($request, $response, $args, $usergroup_id) === true) {
                         $usergroup = $usergroup_list[0];
-                        $usergroup->name = $name;
+                        $usergroup->setName($name);
                         $entityManager->persist($usergroup);
                         $entityManager->flush();
                     } else {
