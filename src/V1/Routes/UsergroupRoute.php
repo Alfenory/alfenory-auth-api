@@ -4,7 +4,7 @@ namespace Alfenory\Auth\V1\Routes;
 
 class UsergroupRoute {
     public function __construct($app) {
-        $app->group('/usergroup', function () {
+        $app->group('/usergroup/{membership_id}', function () {
             $this->get("/", \Alfenory\Auth\V1\Controller\Usergroup::class.":get");
             $this->post("/", \Alfenory\Auth\V1\Controller\Usergroup::class.":create");
             $this->group('/{usergroup_id}', function () {
