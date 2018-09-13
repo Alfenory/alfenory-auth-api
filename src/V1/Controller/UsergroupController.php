@@ -13,7 +13,7 @@ class UsergroupController {
         $this->container = $container;
     }
     
-    public static function get($request, $response) {
+    public static function get($request, $response, $args) {
         global $entityManager;
 
         if(UserController::has_privileg($request, $response, $args, "usergroup.handle_all")) {
@@ -29,7 +29,7 @@ class UsergroupController {
         }
     }
     
-    public static function get_submandatory($request, $response) {
+    public static function get_submandatory($request, $response, $args) {
         global $entityManager;
         if(UserController::has_privileg($request, $response, $args, "usergroup.handle_sub")) {
             $usergroup_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Usergroup')->findBy(array("usergroupId" => UserController::$usergroupBuffer));
@@ -39,7 +39,7 @@ class UsergroupController {
         }
     }
 
-    public static function has_usergroup_priv($usergroup_id) {
+    public static function has_usergroup_priv($request, $response, $args, $usergroup_id) {
         global $entityManager;
         if(UserController::has_privileg($request, $response, $args, "usergroup.handle_all")) {
             $usergroup_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Usergroup')->findBy(array("id" => $usergroup_id));
@@ -63,7 +63,7 @@ class UsergroupController {
         }
     }
 
-    public static function create($request, $response) {
+    public static function create($request, $response, $args) {
         global $entityManager;
         if(UserController::has_privileg($request, $response, $args, "usergroup.post")) {
             $wslib = new Webservicelib();
@@ -74,7 +74,7 @@ class UsergroupController {
                 $usergroup->setUsergroupId('');
                 $usergroup_id = $wslib->filter_string_request($request, "usergroup_id");
                 if($usergroup_id !== '') {
-                    if(self::has_usergroup_priv($usergroup_id) === true) {
+                    if(self::has_usergroup_priv($request, $response, $args, $usergroup_id) === true) {
                         $usergroup->setUsergroupId($usergroup_id);
                         return $response->withJson(Returnlib::get_success($usergroup));
                     }
@@ -94,7 +94,7 @@ class UsergroupController {
         }
     }
 
-    public static function update($request, $response) {
+    public static function update($request, $response, $args) {
         global $entityManager;
         if(UserController::has_privileg($request, $response, $args, "usergroup.put")) {
             
@@ -104,7 +104,7 @@ class UsergroupController {
         return $response;
     }
     
-    public static function delete($request, $response) {
+    public static function delete($request, $response, $args) {
         return $response;
     }
     
