@@ -24,7 +24,7 @@ class UsergroupUserController {
             $route = $request->getAttribute('route');
             $usergroup_id = $route->getArgument('usergroup_id');
             if (UsergroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
-                $query = $em->createQuery('SELECT u FROM Alfenory\Auth\V1\Entity\User u WHERE EXISTS (SELECT uu FROM Alfenory\Auth\V1\Entity\UsergroupUser uu WHERE uu.user_id = u.id and uu.usergroup_id = :usergroup_id)');
+                $query = $entityManager->createQuery('SELECT u FROM Alfenory\Auth\V1\Entity\User u WHERE EXISTS (SELECT uu FROM Alfenory\Auth\V1\Entity\UsergroupUser uu WHERE uu.user_id = u.id and uu.usergroup_id = :usergroup_id)');
                 $query->setParameter('usergroup_id', $usergroup_id);
                 $user_list = $query->getResult();
                 return $response->withJson(Returnlib::get_success($user_list));
