@@ -17,7 +17,7 @@ class UsergroupUserController {
         $this->container = $container;
     }
     
-    public static function get($request, $response) {
+    public static function get($request, $response, $args) {
         global $entityManager;
 
         if (UserController::has_privileg($request, $response, $args, "user.get")) {
@@ -36,11 +36,11 @@ class UsergroupUserController {
         }
     }
     
-    public static function update($request, $response) {
+    public static function update($request, $response, $args) {
         return $response;
     }
     
-    public static function delete($request, $response) {
+    public static function delete($request, $response, $args) {
         return $response;
     }
     
