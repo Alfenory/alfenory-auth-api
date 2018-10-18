@@ -54,6 +54,10 @@ class Webservicelib {
         return $this->filter_request($request, $field, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     }
     
+    public function filter_email_request($request, $field) {
+        return $this->filter_request($request, $field, FILTER_SANITIZE_EMAIL);
+    }
+
     public function check_time_string($timestr) {
     	if($timestr === null) {
     		return false;

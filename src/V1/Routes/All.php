@@ -11,6 +11,7 @@ class All {
             new SettingRoute($this);
             new UserRoute($this);
             new UsergroupRoute($this);
+            new InvitationRoute($this);
         });
     }
     

@@ -231,6 +231,10 @@ class User implements \JsonSerializable {
 
     public function jsonSerialize() {
         $vars = get_object_vars($this);
+        unset($vars["securecode"]);
+        unset($vars["securecode_created"]);
+        unset($vars["salt"]);
+        unset($vars["password"]);
         return $vars;
     }
 
