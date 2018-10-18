@@ -7,11 +7,14 @@ namespace Alfenory\Auth\V1\Entity;
  */
 class UserWrapper {
     var $user = null;
-    var $plattform_access_list = null;
-    var $plattform_list = null;
-    function __construct($user) {
+    var $role_id = null;
+    function __construct($user, $role_id) {
         $this->user = $user;
-        $this->plattform_access_list = array();
-        $this->plattform_list = array();
+        $this->role_id = $role_id;
+    }
+    
+    public function jsonSerialize() {
+        $vars = get_object_vars($this);
+        return $vars;
     }
 }
