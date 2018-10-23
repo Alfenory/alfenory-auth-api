@@ -18,12 +18,13 @@ class RoleRoute {
                     });
                 });
             });
+            $this->get("/get_inheritage_roles", \Alfenory\Auth\V1\Controller\RoleController::class.":get_inheritage_roles")->setName("get_role_list");
             
             $this->get('/privileg', \Alfenory\Auth\V1\Controller\RolePrivilegController::class.":get")->setName("get_v1_auth_role_membership_id_privileg");
         });
 
         $app->group("/privileges/{membership_id}", function() {
             $this->get('/', \Alfenory\Auth\V1\Controller\RolePrivilegController::class.":priv_list")->setName("get_v1_auth_privileges_membership_id");
-        });    
+        });
     }
 }

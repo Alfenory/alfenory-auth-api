@@ -76,6 +76,16 @@ class UserController {
         }
         return false;
     }
+
+    public static function get_privileges($role_id) {
+        global $entityManager;
+        $priv_list = Array();
+        $privileg_list = $entityManager->getRepository('\Alfenory\Auth\V1\Entity\RolePrivileg')->findBy(array('role_id' => $role_id));
+        foreach($privileg_list as $priv) {
+            $priv_list[] = $priv->getPrivileg();
+        }
+        return $priv_list;
+    }
     
     public static function get_privileges_basic($request, $response, $args) {
         global $config, $entityManager;
@@ -85,19 +95,12 @@ class UserController {
             $user = \Alfenory\Auth\V1\Lib\Webservicelib::get_user_or_return_error($request, $response);
             
             if($user !== null) {
-            
                 self::$userId = $user->getId();
-
                 $memberhip_id = $args["membership_id"];
                 $membership_list = $entityManager->getRepository("\Alfenory\Auth\V1\Entity\UsergroupUser")->findBy(array("id" => $memberhip_id, "user_id" => $user->getId()));
-                
                 $pages = array();
                 if(count($membership_list) > 0) {
-                    self::$privilegBuffer = Array();
-                    $privileg_list = $entityManager->getRepository('\Alfenory\Auth\V1\Entity\RolePrivileg')->findBy(array('role_id' => $membership_list[0]->getRoleId()));
-                    foreach($privileg_list as $priv) {
-                        self::$privilegBuffer[] = $priv->getPrivileg();
-                    }
+                    self::$privilegBuffer = self::get_privileges($membership_list[0]->getRoleId());
                     self::$usergroupBuffer = $membership_list[0]->getUsergroupId();
                 }
                 return self::$privilegBuffer;

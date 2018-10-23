@@ -13,11 +13,45 @@ class RoleController {
         $this->container = $container;
     }
     
+    public static function get_roles() {
+        global $entityManager;
+        return $entityManager->getRepository('Alfenory\Auth\V1\Entity\Role')->findAll();
+    }
+
+    public static function is_role_inheritage_of_role($request, $response, $args, $role_id) {
+        $priv_list = UserController::get_privileges($role_id);
+        for ($i=0;$i<count($priv_list);$i++) {
+            if (UserController::has_privileg($request, $response, $args, $priv_list[$i]) === false) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static function get_inheritage_roles($request, $response, $args) {
+        global $entityManager;
+        if (UserController::has_privileg($request, $response, $args, "role.inharitage")) {
+            $role_list1 = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Role')->findBy(array('usergroup_id' => null));
+            $role_list2 = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Role')->findBy(array('usergroup_id' => UserController::usergroupBuffer));
+            $role_list = array_merge($role_list1, $role_list2);
+
+            $target_roles = Array();
+            for ($i=0;$i<count($role_list);$i++) {
+                if (self::is_role_inheritage_of_role($request, $response, $args, $role_list[$i]->getId())) {
+                    $target_roles[] = $role_list[$i];
+                }
+            }
+            
+            return $response->withJson(Returnlib::get_success($target_roles));
+        } else {
+            return $response->withJson(Returnlib::no_privileg());
+        }
+    }
+
     public static function get($request, $response, $args) {
         global $entityManager;
-        if(UserController::has_privileg($request, $response, $args, "role.get")) {
-            $role_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Role')->findAll();
-            return $response->withJson(Returnlib::get_success($role_list));
+        if (UserController::has_privileg($request, $response, $args, "role.get")) {
+            return $response->withJson(Returnlib::get_success(self::get_roles()));
         }
         else {
             return $response->withJson(Returnlib::no_privileg());
@@ -26,7 +60,7 @@ class RoleController {
     
     public static function update($request, $response, $args) {
         global $entityManager;
-        if(UserController::has_privileg($request, $response, $args, "role.put")) {
+        if (UserController::has_privileg($request, $response, $args, "role.put")) {
             $route = $request->getAttribute('route');
             $id = $route->getArgument('role_id');
             $name = $request->getParam('name');
@@ -49,7 +83,7 @@ class RoleController {
 
     public static function create($request, $response, $args) {
         global $entityManager;
-        if(UserController::has_privileg($request, $response, $args, "role.post")) {
+        if (UserController::has_privileg($request, $response, $args, "role.post")) {
             $wslib = new Webservicelib();
             $name = $wslib->filter_string_request($request, "name");
             if($wslib->print_error_if_needed($response) === false) {
@@ -69,7 +103,7 @@ class RoleController {
     
     public static function delete($request, $response, $args) {
         global $entityManager;
-        if(UserController::has_privileg($request, $response, $args, "role.delete")) {
+        if (UserController::has_privileg($request, $response, $args, "role.delete")) {
             $route = $request->getAttribute('route');
             $id = $route->getArgument('role_id');
             $role_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Role')->findBy(array('id' => $id));
