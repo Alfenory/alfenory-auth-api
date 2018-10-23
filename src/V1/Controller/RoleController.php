@@ -36,7 +36,7 @@ class RoleController {
             error_log("testB");
             $role_list1 = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Role')->findBy(array('usergroup_id' => null));
             error_log("testC");
-            $role_list2 = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Role')->findBy(array('usergroup_id' => UserController::usergroupBuffer));
+            $role_list2 = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Role')->findBy(array('usergroup_id' => UserController::$usergroupBuffer));
             error_log("testD");
             $role_list = array_merge($role_list1, $role_list2);
             error_log("testE");
