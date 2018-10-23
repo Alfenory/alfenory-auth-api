@@ -25,7 +25,7 @@ class InfoController {
         $priv_list = array();
         $priv_list[] = "priv_list.get";
         $priv_list[] = "role.crud";
-        $priv_list[] = "role.inharitage";
+        $priv_list[] = "role.inheritage_roles";
         $priv_list[] = "roleprivileg.crud";
         $priv_list[] = "usergroup.crud";
         $priv_list[] = "usergroup.handle_all";

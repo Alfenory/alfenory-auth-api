@@ -30,7 +30,7 @@ class RoleController {
 
     public static function get_inheritage_roles($request, $response, $args) {
         global $entityManager;
-        if (UserController::has_privileg($request, $response, $args, "role.inharitage")) {
+        if (UserController::has_privileg($request, $response, $args, "role.inheritage_roles")) {
             $role_list1 = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Role')->findBy(array('usergroup_id' => null));
             $role_list2 = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Role')->findBy(array('usergroup_id' => UserController::usergroupBuffer));
             $role_list = array_merge($role_list1, $role_list2);
