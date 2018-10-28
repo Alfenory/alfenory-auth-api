@@ -31,24 +31,16 @@ class RoleController {
     public static function get_inheritage_roles($request, $response, $args) {
         global $entityManager;
         
-        error_log("testA");
         if (UserController::has_privileg($request, $response, $args, "role.inheritage_roles")) {
-            error_log("testB");
             $role_list1 = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Role')->findBy(array('usergroup_id' => null));
-            error_log("testC");
             $role_list2 = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Role')->findBy(array('usergroup_id' => UserController::$usergroupBuffer));
-            error_log("testD");
             $role_list = array_merge($role_list1, $role_list2);
-            error_log("testE");
             $target_roles = Array();
-            error_log("testE");
             for ($i=0;$i<count($role_list);$i++) {
-                error_log("testE");
                 if (self::is_role_inheritage_of_role($request, $response, $args, $role_list[$i]->getId())) {
                     $target_roles[] = $role_list[$i];
                 }
-            }
-            
+            }    
             return $response->withJson(Returnlib::get_success($target_roles));
         } else {
             return $response->withJson(Returnlib::no_privileg());

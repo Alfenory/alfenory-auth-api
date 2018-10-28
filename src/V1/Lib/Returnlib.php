@@ -72,5 +72,9 @@ class Returnlib {
     public static function no_file() {
         return returnlib::error("12", "no file or to many files where transfered");
     }
+
+    public static function user_already_exists() {
+        return returnlib::error("13", "user already exists");    
+    }
     
 }

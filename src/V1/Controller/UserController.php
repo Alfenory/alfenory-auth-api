@@ -114,6 +114,89 @@ class UserController {
             return self::$privilegBuffer;
         }
     }
+
+    public static function username_exists($username) {
+        global $config, $entityManager;
+        if (UserController::has_privileg($request, $response, $args, "user.post")) {
+            $username_list = $entityManager->getRepository("\Alfenory\Auth\V1\Entity\User")->findBy(array("username" => $username));
+            if(count($membership_list) > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static function send_confirmation($user) {
+        global $config;
+        $url = $config["url"];
+        $salutation = $user->get_email_salutation();
+
+        $confirmation_subject = $config["email"]["content"]["confirmationsubject"];
+        $confirmation_content = $config["email"]["content"]["confirmation"];
+
+        $confirmation_content = str_replace("{url}/user/confirm", $url, $confirmation_content);
+        $confirmation_content = str_replace("{salutation}", $url, $confirmation_content);
+
+        $email = $user->getEmail();
+        $emailname = $user->getFirstname()+" "+$user->getLastname();
+        
+        $content = $config["email"]["content"]["confirmation"];
+        \Alfenory\Auth\V1\Lib\Sendmail::sendEmailFormated($email, $emailname, $confirmation_subject, $content);
+    }
+
+    public static function create($request, $response, $args) {
+        global $config, $entityManager;
+        if (UsergroupController::has_usergroup_priv()) {
+            if (UserController::has_privileg($request, $response, $args, "user.post")) {
+                $wslib = new Webservicelib();
+                $salutation = $wslib->filter_string_request($request, "salutation");
+                $firstname = $wslib->filter_string_request($request, "firstname");
+                $lastname = $wslib->filter_string_request($request, "lastname");
+                $email = $wslib->filter_string_request($request, "email");
+                $username = $wslib->filter_string_request($request, "username");
+                $role_id = $wslib->filter_string_request($request, "role_id");
+                if ($wslib->print_error_if_needed($response) === false) {
+                    if (self::username_exists($username)) {
+                        $user = new \Alfenory\Auth\V1\Entity\User();
+                        $user->setSalutation($salutation);
+                        $user->setFirstName($firstname);
+                        $user->setLastName($lastname);
+                        $user->setEmail($email);
+                        $user->setUsername($username);
+                        $user->setSecurecode(\Alfenory\Auth\V1\Entity\User::get_guid());
+                        $user->getSecurecodeCreated(date("Y-m-d H:i:s"));
+                        $user->setActive(0);
+                        $entityManager->persist($user);
+                        $entityManager->flush();
+
+                        $route = $request->getAttribute('route');
+                        $usergroup_id = $route->getArgument('usergroup_id');
+
+                        $usergroup = new \Alfenory\Auth\V1\Entity\Usergroup();
+                        $usergroup->setUserId($user->getId());
+                        $usergroup->setUsergroupId($usergroup_id);
+                        $usergroup->setRoleId($role_id);
+                        $entityManager->persist($usergroup);
+                        $entityManager->flush();
+
+                        self::send_confirmation($user);
+                        return $response->withJson(Returnlib::get_success());
+                    } else {
+                        return $response->withJson(Returnlib::user_already_exists());
+                    }
+                }
+                else {
+                    return $response->withJson(Returnlib::user_parameter_missing($wslib->error_list));
+                }
+            } else {
+                return $response->withJson(Returnlib::no_privileg());
+            }
+        } else {
+            return $response->withJson(Returnlib::no_privileg());
+        }
+    }
     
     public static function get_usergroup_membership($request, $response, $args) {
         global $config, $entityManager;

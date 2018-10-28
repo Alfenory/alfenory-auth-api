@@ -7,6 +7,18 @@ class Sendmail {
 
     public static $errorLog = "";
 
+    public static function sendEmailFormated($email, $emailname, $subject, $content) {
+        global $config;
+
+        $mail_header = $config["email"]["content"]["header"];
+
+        $mail_footer = $config["email"]["content"]["footer"];
+
+        $content1 = $mail_header.$content.$mail_footer;
+
+        return self::sendEmail($email, $emailname, $subject, $content1, $content1);
+    }
+
     public static function sendEmail($email, $emailname, $subject, $content, $contenthtml = '') {
 
         global $config;
