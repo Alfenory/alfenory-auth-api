@@ -29,11 +29,12 @@ class InvitationController {
             $wslib = new Webservicelib();
             $username  = $wslib->filter_string_request($request, "username");
             $email = $wslib->filter_email_request($request, "email");
-            $usergroup_id = $wslib->filter_string_request($request, "usergroup_id");
             $salutation = $wslib->filter_string_request($request, "salutation");
             $firstname = $wslib->filter_string_request($request, "firstname");
             $lastname = $wslib->filter_string_request($request, "lastname");
             $role_id = $wslib->filter_string_request($request, "role_id");
+            $route = $request->getAttribute('route');
+            $usergroup_id = $route->getArgument('usergroup_id');
             if ($wslib->print_error_if_needed($response) === false) {
                 if (UserGroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
                     $invitation = new \Alfenory\Auth\V1\Entity\Invitation();
