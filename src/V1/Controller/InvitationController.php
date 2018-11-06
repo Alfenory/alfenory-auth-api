@@ -25,7 +25,7 @@ class InvitationController {
 
     public static function create($request, $response, $args) {
         global $entityManager;
-        if (UserController::has_privileg($request, $response, $args, "invitation.post")) {
+        if (UserController::has_privileg($request, $response, $args, "user.post")) {
             $wslib = new Webservicelib();
             $username  = $wslib->filter_string_request($request, "username");
             $email = $wslib->filter_email_request($request, "email");
