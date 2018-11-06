@@ -54,8 +54,12 @@ class InvitationController {
                     error_log("t1g");
                     $invitation->setDate(date("Y-m-j G:i:s"));
                     error_log("t2");
-                    $entityManager->persist($invitation);
-                    $entityManager->flush();
+                    try {
+                        $entityManager->persist($invitation);
+                        $entityManager->flush();
+                    } catch (Exception $e) {
+                        echo 'Exception abgefangen: ',  $e->getMessage(), "\n";
+                    }
                     error_log("t3");
                     self::sendInvitation($email, $invitation->getId());
                     error_log("t4");
