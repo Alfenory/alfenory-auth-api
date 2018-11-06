@@ -21,7 +21,7 @@ class UsergroupRoute {
                 });
                 $this->group('/user', function () {
                     $this->get("/", \Alfenory\Auth\V1\Controller\UsergroupUserController::class.":get");
-                    $this->post("/", \Alfenory\Auth\V1\Controller\UsergroupUserController::class.":create");
+                    $this->post("/", \Alfenory\Auth\V1\Controller\InvitationController::class.":create");
                     $this->group('/{user_id}', function () {
                         $this->put("/", \Alfenory\Auth\V1\Controller\UsergroupUserController::class.":update");
                         $this->delete("/", \Alfenory\Auth\V1\Controller\UsergroupUserController::class.":delete");
