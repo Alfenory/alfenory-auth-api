@@ -54,4 +54,8 @@ class Invitation implements \JsonSerializable {
     public function getUsergroupId() { return $this->usergroup_id; }
     public function setUsergroupId($usergroup_id) { $this->usergroup_id = $usergroup_id; }
 
+    public function jsonSerialize() {
+        $vars = get_object_vars($this);
+        return $vars;
+    }
 }
