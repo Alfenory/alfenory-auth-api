@@ -33,7 +33,7 @@ class Invitation implements \JsonSerializable {
     
     /** @ORM\Column(type="integer") */
     private $salutation;
-    public function getSalutationn() { return $this->salutation; }
+    public function getSalutation() { return $this->salutation; }
     public function setSalutation($salutation) { $this->salutation = $salutation; }
     
     /** @ORM\Column(type="string",length=255) */

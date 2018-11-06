@@ -39,12 +39,19 @@ class InvitationController {
                 if (UserGroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
                     error_log("t1");
                     $invitation = new \Alfenory\Auth\V1\Entity\Invitation();
+                    $error_log("t1a");
                     $invitation->setUsername($username);
+                    $error_log("t1b");
                     $invitation->setEmail($email);
+                    $error_log("t1c");
                     $invitation->setUsergroupId($usergroup_id);
+                    $error_log("t1d");
                     $invitation->setSalutation($salutation);
+                    $error_log("t1e");
                     $invitation->setFirstName($firstname);
+                    $error_log("t1f");
                     $invitation->setLastName($lastname);
+                    $error_log("t1g");
                     $invitation->setDate(date("Y-m-j G:i:s"));
                     error_log("t2");
                     $entityManager->persist($invitation);
