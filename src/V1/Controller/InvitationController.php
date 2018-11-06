@@ -37,6 +37,7 @@ class InvitationController {
             $usergroup_id = $route->getArgument('usergroup_id');
             if ($wslib->print_error_if_needed($response) === false) {
                 if (UserGroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
+                    error_log("t1");
                     $invitation = new \Alfenory\Auth\V1\Entity\Invitation();
                     $invitation->setUsername($username);
                     $invitation->setEmail($email);
@@ -45,9 +46,12 @@ class InvitationController {
                     $invitation->setFirstName($firstname);
                     $invitation->setLastName($lastname);
                     $invitation->setDate(date("Y-m-j G:i:s"));
+                    error_log("t2");
                     $entityManager->persist($invitation);
                     $entityManager->flush();
+                    error_log("t3");
                     self::sendInvitation($email, $invitation->getId());
+                    error_log("t4");
                     return $response->withJson(Returnlib::get_success());
                 }
                 else {
