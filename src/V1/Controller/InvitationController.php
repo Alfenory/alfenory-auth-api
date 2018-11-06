@@ -25,7 +25,7 @@ class InvitationController {
 
     public static function create($request, $response, $args) {
         global $entityManager;
-        if (UserController::has_privileg($request, $response, $args, "user.post")) {
+        if (UserController::has_privileg($request, $response, $args, "user.post")) { 
             $wslib = new Webservicelib();
             $username  = $wslib->filter_string_request($request, "username");
             $email = $wslib->filter_email_request($request, "email");
@@ -35,7 +35,6 @@ class InvitationController {
             $lastname = $wslib->filter_string_request($request, "lastname");
             $role_id = $wslib->filter_string_request($request, "role_id");
             if ($wslib->print_error_if_needed($response) === false) {
-                //TODO CHECK WHETHER ROLE CAN BE SET OF CURRENT USER 
                 if (UserGroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
                     $invitation = new \Alfenory\Auth\V1\Entity\Invitation();
                     $invitation->setUsername($username);
