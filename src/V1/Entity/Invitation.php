@@ -1,5 +1,6 @@
 <?php
 
+namespace Alfenory\Auth\V1\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
