@@ -56,6 +56,7 @@ class InvitationController {
                     error_log("t2");
                     try {
                         $entityManager->persist($invitation);
+                        error_log("t2a");
                         $entityManager->flush();
                     } catch (Exception $e) {
                         echo 'Exception abgefangen: ',  $e->getMessage(), "\n";
