@@ -21,7 +21,7 @@ class Invitation implements \JsonSerializable {
     public function getCreationdate() { return $this->creationdate; }
     public function setCreationdate($creationdate) { $this->creationdate = $creationdate; }
 
-    /** @ORM\Column(tye="string", length=255) */
+    /** @ORM\Column(type="string", length=255) */
     private $username;
     public function getUsername() { return $this->username; }
     public function setUsername($username) { $this->username = $username; }
