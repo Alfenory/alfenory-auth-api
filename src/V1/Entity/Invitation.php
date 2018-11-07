@@ -47,10 +47,12 @@ class Invitation implements \JsonSerializable {
     public function getLastName() { return $this->lastname; }
     public function setLastName($last_name) { $this->lastname = $last_name; }
 
+    /** @ORM\Column(type="string",length=255) */
     private $role_id;
     public function getRoleId() { return $this->role_id; }
     public function setRoleId($role_id) { $this->role_id = $role_id; }
 
+    /** @ORM\Column(type="string",length=255) */
     private $usergroup_id;
     public function getUsergroupId() { return $this->usergroup_id; }
     public function setUsergroupId($usergroup_id) { $this->usergroup_id = $usergroup_id; }

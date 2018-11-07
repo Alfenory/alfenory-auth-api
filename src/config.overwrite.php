@@ -23,6 +23,7 @@ $config["email"]["content"] = array();
 $config["email"]["content"]["header"] = "<div><div style='max-width: 600px'><h4>Header</h4></div><div style='max-width: 600px'>";
 $config["email"]["content"]["footer"] = "</div><div style='max-width: 600px'><h5>Footer</h5></div></div>";
 
+$config["email"]["content"]["confirmation_subject"] = "Einladung";
 $config["email"]["content"]["confirmation"] = "
 <p><b>{salutation]</b></p>
 <p><b>Link um das Passwort für den Login zu setzen.</p>

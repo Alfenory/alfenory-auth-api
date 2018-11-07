@@ -16,9 +16,9 @@ class InvitationController {
 
     public static function sendInvitation($email, $seccode) {
         global $config;
-        $subject = $config["invitation"]["subject"];
-        $content = $config["invitation"]["content"];
-        $link = $config["invitation"]["link"];
+        $subject = $config["email"]["content"]["confirmation_subject"];
+        $content = $config["email"]["content"]["confirmation"];
+        $link = $config["url"]."/confirmation/".$seccode;
         $content = str_replace("{LINK}", $link, $content);
         Sendmail::sendEmail($email, $emailname, $subject, $content, str_replace("\n", "<br/>", $content));
     }
@@ -52,13 +52,14 @@ class InvitationController {
                     error_log("t1f");
                     $invitation->setLastName($lastname);
                     error_log("t1g");
+                    $invitation->setRoleId($role_id);
                     $invitation->setCreationdate(new \DateTime("now"));
                     error_log("t2");
                     try {
                         $entityManager->persist($invitation);
                         error_log("t2a");
                         $entityManager->flush();
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         echo 'Exception abgefangen: ',  $e->getMessage(), "\n";
                     }
                     error_log("t3");
