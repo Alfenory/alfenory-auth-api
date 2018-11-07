@@ -36,7 +36,7 @@ class Sendmail {
             $mail->SMTPAuth = $config["email"]["smtp_ssl"];            // true to enable SMTP authentication
             $mail->Username = $config["email"]["username"];        // SMTP username
             $mail->Password = $config["email"]["password"];        // SMTP password
-            $mail->SMTPSecure = $config["email"]["sec"];           // 'tls' enable TLS encryption, `ssl` also accepted
+            $mail->SMTPSecure = $config["email"]["smtp_sec"];           // 'tls' enable TLS encryption, `ssl` also accepted
             $mail->Port = $config["email"]["smtp_port"];                // f.e. 587 TCP port to connect to
 
             //Recipients
