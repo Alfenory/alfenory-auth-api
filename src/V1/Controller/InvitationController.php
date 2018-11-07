@@ -14,13 +14,13 @@ class InvitationController {
         $this->container = $container;
     }
 
-    public static function sendInvitation($email, $seccode) {
+    public static function sendInvitation($email, $emailname, $seccode) {
         global $config;
         $subject = $config["email"]["content"]["confirmation_subject"];
         $content = $config["email"]["content"]["confirmation"];
         $link = $config["url"]."/confirmation/".$seccode;
         $content = str_replace("{LINK}", $link, $content);
-        Sendmail::sendEmail($email, $emailname, $subject, $content, str_replace("\n", "<br/>", $content));
+        Sendmail::sendEmailFormated($email, $emailname, $subject, $content);
     }
 
     public static function create($request, $response, $args) {
@@ -37,34 +37,18 @@ class InvitationController {
             $usergroup_id = $route->getArgument('usergroup_id');
             if ($wslib->print_error_if_needed($response) === false) {
                 if (UserGroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
-                    error_log("t1");
                     $invitation = new \Alfenory\Auth\V1\Entity\Invitation();
-                    error_log("t1a");
                     $invitation->setUsername($username);
-                    error_log("t1b");
                     $invitation->setEmail($email);
-                    error_log("t1c");
                     $invitation->setUsergroupId($usergroup_id);
-                    error_log("t1d");
                     $invitation->setSalutation($salutation);
-                    error_log("t1e");
                     $invitation->setFirstName($firstname);
-                    error_log("t1f");
                     $invitation->setLastName($lastname);
-                    error_log("t1g");
                     $invitation->setRoleId($role_id);
                     $invitation->setCreationdate(new \DateTime("now"));
-                    error_log("t2");
-                    try {
-                        $entityManager->persist($invitation);
-                        error_log("t2a");
-                        $entityManager->flush();
-                    } catch (\Exception $e) {
-                        echo 'Exception abgefangen: ',  $e->getMessage(), "\n";
-                    }
-                    error_log("t3");
-                    self::sendInvitation($email, $invitation->getId());
-                    error_log("t4");
+                    $entityManager->persist($invitation);
+                    $entityManager->flush();
+                    self::sendInvitation($email, $firstname." ".$lastname, $invitation->getId());
                     return $response->withJson(Returnlib::get_success());
                 }
                 else {

@@ -1,5 +1,7 @@
 <?php
 
+namespace Alfenory\Auth\V1\Lib;
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -23,29 +25,31 @@ class Sendmail {
 
         global $config;
 
+        error_log("sa1");
+
         $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
         try {
             //Server settings
             $mail->SMTPDebug = 2;                                 // Enable verbose debug output
             $mail->isSMTP();                                      // Set mailer to use SMTP
-            $mail->Host = $config["smtp"]["host"];                // Specify main and backup SMTP servers
-            $mail->SMTPAuth = $config["smtp"]["auth"];            // true to enable SMTP authentication
-            $mail->Username = $config["smtp"]["username"];        // SMTP username
-            $mail->Password = $config["smtp"]["password"];        // SMTP password
-            $mail->SMTPSecure = $config["smtp"]["sec"];           // 'tls' enable TLS encryption, `ssl` also accepted
-            $mail->Port = $config["smtp"]["port"];                // f.e. 587 TCP port to connect to
+            $mail->Host = $config["email"]["smtp_host"];                // Specify main and backup SMTP servers
+            $mail->SMTPAuth = $config["email"]["smtp_ssl"];            // true to enable SMTP authentication
+            $mail->Username = $config["email"]["username"];        // SMTP username
+            $mail->Password = $config["email"]["password"];        // SMTP password
+            $mail->SMTPSecure = $config["email"]["sec"];           // 'tls' enable TLS encryption, `ssl` also accepted
+            $mail->Port = $config["email"]["smtp_port"];                // f.e. 587 TCP port to connect to
 
             //Recipients
-            $mail->setFrom($$config["smtp"]["from"], $config["smtp"]["fromName"]);
+            $mail->setFrom($$config["email"]["address"], $config["email"]["name"]);
             $mail->addAddress($email, $emailname);                // Add a recipient
-            if (isset($config["smtp"]["replyto"])) {
-                $mail->addReplyTo($config["smtp"]["replyto"], $config["smtp"]["replytoname"]);
+            if (isset($config["email"]["replyto"])) {
+                $mail->addReplyTo($config["smtp"]["replyto"], $config["email"]["replytoname"]);
             }
-            if (isset($config["smtp"]["cc"])) {
+            if (isset($config["email"]["cc"])) {
                 $mail->addCC($config["smtp"]["cc"]);
             }
-            if (isset($config["smtp"]["bcc"])) {
-                $mail->addBCC('bcc@example.com');
+            if (isset($config["emaill"]["bcc"])) {
+                $mail->addBCC($config["emaill"]["bcc"]);
             }
             
             //Content

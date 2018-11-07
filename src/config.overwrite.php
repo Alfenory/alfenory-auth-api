@@ -17,6 +17,7 @@ $config["email"]["name"] = "TODO";
 $config["email"]["smtp_host"] = "TODO";
 $config["email"]["smtp_port"] = "TODO";
 $config["email"]["smtp_ssl"] = false;
+$condig["email"]["smtp_sec"] = "";
 $config["email"]["username"] = "TODO";
 $config["email"]["password"] = "TODO";
 $config["email"]["content"] = array();
