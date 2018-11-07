@@ -52,7 +52,7 @@ class InvitationController {
                     error_log("t1f");
                     $invitation->setLastName($lastname);
                     error_log("t1g");
-                    $invitation->setCreationdate(date("Y-m-j G:i:s"));
+                    $invitation->setCreationdate(new \DateTime("now"));
                     error_log("t2");
                     try {
                         $entityManager->persist($invitation);
