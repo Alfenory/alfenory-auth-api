@@ -14,12 +14,13 @@ class InvitationController {
         $this->container = $container;
     }
 
-    public static function sendInvitation($email, $emailname, $seccode) {
+    public static function sendInvitation($email, $emailname, $username, $seccode) {
         global $config;
         $subject = $config["email"]["content"]["confirmation_subject"];
         $content = $config["email"]["content"]["confirmation"];
         $link = $config["url"]."/confirmation/".$seccode;
-        $content = str_replace("{LINK}", $link, $content);
+        $content = str_replace("\{LINK\}", $link, $content);
+        $content = str_replace("\{username\}", $username, $content);
         Sendmail::sendEmailFormated($email, $emailname, $subject, $content);
     }
 
@@ -48,7 +49,7 @@ class InvitationController {
                     $invitation->setCreationdate(new \DateTime("now"));
                     $entityManager->persist($invitation);
                     $entityManager->flush();
-                    self::sendInvitation($email, $firstname." ".$lastname, $invitation->getId());
+                    self::sendInvitation($email, $firstname." ".$lastname, $username, $invitation->getId());
                     return $response->withJson(Returnlib::get_success());
                 }
                 else {

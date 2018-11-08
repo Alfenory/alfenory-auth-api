@@ -25,12 +25,10 @@ class Sendmail {
 
         global $config;
 
-        error_log("sa1");
-
         $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
         try {
             //Server settings
-            $mail->SMTPDebug = 2;                                 // Enable verbose debug output
+            $mail->SMTPDebug = 0;                                 // Enable verbose debug output
             $mail->isSMTP();                                      // Set mailer to use SMTP
             $mail->Host = $config["email"]["smtp_host"];                // Specify main and backup SMTP servers
             $mail->SMTPAuth = $config["email"]["smtp_ssl"];            // true to enable SMTP authentication
@@ -40,7 +38,7 @@ class Sendmail {
             $mail->Port = $config["email"]["smtp_port"];                // f.e. 587 TCP port to connect to
 
             //Recipients
-            $mail->setFrom($$config["email"]["address"], $config["email"]["name"]);
+            $mail->setFrom($config["email"]["address"], $config["email"]["name"]);
             $mail->addAddress($email, $emailname);                // Add a recipient
             if (isset($config["email"]["replyto"])) {
                 $mail->addReplyTo($config["smtp"]["replyto"], $config["email"]["replytoname"]);
