@@ -61,4 +61,11 @@ class Invitation implements \JsonSerializable {
         $vars = get_object_vars($this);
         return $vars;
     }
+
+    public function get_email_salutation() {
+        if ($this->salutation * 1 === 1) {
+            return "Hallo Herr " . $this->getLastname() . "!";
+        }
+        return "Hallo Frau " . $this->getLastname() . "!";
+    }
 }
