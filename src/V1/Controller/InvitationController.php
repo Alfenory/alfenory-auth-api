@@ -19,9 +19,9 @@ class InvitationController {
         $subject = $config["email"]["content"]["confirmation_subject"];
         $content = $config["email"]["content"]["confirmation"];
         $link = $config["url"]."/confirmation/".$seccode;
-        $content = str_replace("\{LINK\}", $link, $content);
-        $content = str_replace("\{username\}", $username, $content);
-        $content = str_replace("\{salutation\}", $salutation, $content);
+        $content = str_replace("\\{LINK\\}", $link, $content);
+        $content = str_replace("\\{username\\}", $username, $content);
+        $content = str_replace("\\{salutation\\}", $salutation, $content);
         Sendmail::sendEmailFormated($email, $emailname, $subject, $content);
     }
 
