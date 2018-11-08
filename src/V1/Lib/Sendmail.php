@@ -28,6 +28,7 @@ class Sendmail {
         $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
         try {
             //Server settings
+            $mail->CharSet = "utf-8"; 
             $mail->SMTPDebug = 0;                                 // Enable verbose debug output
             $mail->isSMTP();                                      // Set mailer to use SMTP
             $mail->Host = $config["email"]["smtp_host"];                // Specify main and backup SMTP servers
@@ -61,7 +62,7 @@ class Sendmail {
                 $mail->Body    = $content;
             }
 
-            $mail->AltBody = $content;
+            $mail->AltBody = strip_tags($content);
 
             $mail->send();
             return true;

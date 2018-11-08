@@ -18,10 +18,10 @@ class InvitationController {
         global $config;
         $subject = $config["email"]["content"]["confirmation_subject"];
         $content = $config["email"]["content"]["confirmation"];
-        $link = $config["url"]."/confirmation/".$seccode;
-        $content = str_replace("\\{LINK\\}", $link, $content);
-        $content = str_replace("\\{username\\}", $username, $content);
-        $content = str_replace("\\{salutation\\}", $salutation, $content);
+        $link = $config["url"]."confirmation/".$seccode;
+        $content = preg_replace("/{url}/", $link, $content);
+        $content = preg_replace("/{username}/", $username, $content);
+        $content = preg_replace("/{salutation]/", $salutation, $content);
         Sendmail::sendEmailFormated($email, $emailname, utf8_encode($subject), utf8_encode($content));
     }
 
