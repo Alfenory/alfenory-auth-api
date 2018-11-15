@@ -69,6 +69,7 @@ class Runner {
             error_log("http_origin:".$http_origin);
             return $response
                     ->withHeader('Access-Control-Allow-Origin', $http_origin)
+                    ->withHeader('Access-Control-Allow-Credentials', 'true')
                     ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, session_id')
                     ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         });
