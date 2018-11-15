@@ -49,11 +49,44 @@ class UsergroupUserController {
     }
 
     public static function create($request, $response, $args) {
+        global $entityManager;
         if (UserController::has_privileg($request, $response, $args, "usergroupuser.post")) {
             $route = $request->getAttribute("route");
             $usergroup_id = $route->getArgument('usergroup_id');
             if (UsergroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
-                
+                $username  = $wslib->filter_string_request($request, "username");
+                $email = $wslib->filter_email_request($request, "email");
+                $salutation = $wslib->filter_string_request($request, "salutation");
+                $firstname = $wslib->filter_string_request($request, "firstname");
+                $lastname = $wslib->filter_string_request($request, "lastname");
+                $role_id = $wslib->filter_string_request($request, "role_id");
+                $password = $wslib->filter_string_request($request, "password");
+                $active = $wslib->filter_int_request($request, "active");
+                if ($wslib->print_error_if_needed($response) === false) {
+                    if (UserGroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
+                        $user = new \Alfenory\Auth\V1\Entity\User();
+                        $user->setSalutation($salutation);
+                        $user->setFirstName($firstname);
+                        $user->setLastName($lastname);
+                        $user->setEmail($email);
+                        $user->initSalt();
+                        $user->setPassword($user->get_password($user->geetSalt(), $password));
+                        $user->setActive($active);
+                        $entityManager->persist($user);
+                        $entityManager->flush();
+                        $ugu = new \Alfenory\Auth\V1\Entity\UsergroupUser();
+                        $ugu->setRoleId($role_id);
+                        $ugu->setUserId($user->getId());
+                        $ugu->setUsergroupId($usergroup_id);
+                        $entityManager->persist($user);
+                        $entityManager->flush();
+                        return $response->withJson(Returnlib::get_success());
+                    } else {
+                        return $response->withJson(Returnlib::no_privileg());
+                    }
+                } else {
+                    return $response->withJson(Returnlib::user_parameter_missing($wslib->error_list));
+                }
             } else {
                 return $response->withJson(Returnlib::no_privileg());
             }

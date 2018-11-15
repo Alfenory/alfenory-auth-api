@@ -79,6 +79,10 @@ class User implements \JsonSerializable {
         return hash("sha512", $salt . $password, false);
     }
 
+    public function initSalt() {
+        $this->salt = self::get_guid();
+    }
+
     public function check_password($password) {
         global $entityManager;
         $salt = $this->salt;
