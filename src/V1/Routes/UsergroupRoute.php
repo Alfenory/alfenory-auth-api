@@ -21,14 +21,19 @@ class UsergroupRoute {
                 });
                 $this->group('/user', function () {
                     $this->get("/", \Alfenory\Auth\V1\Controller\UsergroupUserController::class.":get");
-                    $this->post("/", \Alfenory\Auth\V1\Controller\InvitationController::class.":create");
+                    $this->post("/", \Alfenory\Auth\V1\Controller\UsergroupUserController::class.":create");
                     $this->group('/{user_id}', function () {
                         $this->put("/", \Alfenory\Auth\V1\Controller\UsergroupUserController::class.":update");
                         $this->delete("/", \Alfenory\Auth\V1\Controller\UsergroupUserController::class.":delete");
                     });
-                    $this->group('/invite', function () {
-                        $this->post("/", \Alfenory\Auth\V1\Controller\UsergroupUserController::class.":invite");
-                    });
+                });
+                $this->group('/invitation', function () {
+                    $this->get("/", \Alfenory\Auth\V1\Controller\InvitationController::class.":get");
+                    $this->post("/", \Alfenory\Auth\V1\Controller\InvitationController::class.":create");
+                    $this->group('/{invitation_id}', function () {
+                        $this->put("/", \Alfenory\Auth\V1\Controller\InvitationController::class.":update");
+                        $this->delete("/", \Alfenory\Auth\V1\Controller\InvitationController::class.":delete");
+                    }); 
                 });
             });
         });

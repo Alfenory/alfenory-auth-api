@@ -30,7 +30,7 @@ class UsergroupUserController {
     public static function get($request, $response, $args) {
         global $entityManager;
 
-        if (UserController::has_privileg($request, $response, $args, "user.get")) {
+        if (UserController::has_privileg($request, $response, $args, "usergroupuser.get")) {
             $route = $request->getAttribute('route');
             $usergroup_id = $route->getArgument('usergroup_id');
             if (UsergroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
@@ -46,6 +46,21 @@ class UsergroupUserController {
         } else {
             return $response->withJson(Returnlib::no_privileg());
         }
+    }
+
+    public static function create($request, $response, $args) {
+        if (UserController::has_privileg($request, $response, $args, "usergroupuser.post")) {
+            $route = $request->getAttribute("route");
+            $usergroup_id = $route->getArgument('usergroup_id');
+            if (UsergroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
+                
+            } else {
+                return $response->withJson(Returnlib::no_privileg());
+            }
+        } else {
+            return $response->withJson(Returnlib::no_privileg());
+        }
+        return $response;
     }
     
     public static function update($request, $response, $args) {

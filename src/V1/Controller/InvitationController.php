@@ -27,7 +27,7 @@ class InvitationController {
 
     public static function create($request, $response, $args) {
         global $entityManager;
-        if (UserController::has_privileg($request, $response, $args, "user.post")) { 
+        if (UserController::has_privileg($request, $response, $args, "ivitation.post")) { 
             $wslib = new Webservicelib();
             $username  = $wslib->filter_string_request($request, "username");
             $email = $wslib->filter_email_request($request, "email");
@@ -65,7 +65,7 @@ class InvitationController {
         }
     }
 
-    public static function createUser($request, $response, $args) {
+    public static function confirmation($request, $response, $args) {
         global $entityManager;
         $wslib = new Webservicelib();
         $username  = $wslib->filter_string_request($request, "username");
@@ -76,6 +76,25 @@ class InvitationController {
         //CHECK IF USERNAME EXISTS
         
     }
-    
+
+    public static function get($request, $response, $args) {
+        global $entityManager;
+        if (UserController::has_privileg($request, $response, $args, "invitation.get")) { 
+            $route = $request->getAttribute('route');
+            $usergroup_id = $route->getArgument('usergroup_id');
+            if (UserGroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
+                $list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\Invitation')->findBy(array("usergroup_id" => $usergroup_id));
+                return $response->withJson(Returnlib::get_success($list));
+            } else {
+                return $response->withJson(Returnlib::no_privileg());
+            }
+        } else {
+            return $response->withJson(Returnlib::no_privileg());
+        }
+    }
+
+    public static function delete($request, $response, $args) {
+        //TODO
+    }
 
 }

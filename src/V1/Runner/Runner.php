@@ -68,7 +68,7 @@ class Runner {
             return $response
                     ->withHeader('Access-Control-Allow-Origin', '*')
                     ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, session_id')
-                    ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+                    ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         });
         
         if($config["api_url_path"] != "") {
