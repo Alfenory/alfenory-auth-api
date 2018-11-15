@@ -65,8 +65,10 @@ class Runner {
 
         $app->add(function ($req, $res, $next) {
             $response = $next($req, $res);
+            $http_origin = $_SERVER['HTTP_ORIGIN'];
+            error_log("http_origin:".$http_origin);
             return $response
-                    ->withHeader('Access-Control-Allow-Origin', '*')
+                    ->withHeader('Access-Control-Allow-Origin', $http_origin)
                     ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, session_id')
                     ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         });
