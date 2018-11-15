@@ -67,7 +67,7 @@ class Runner {
             $response = $next($req, $res);
             $http_origin = $_SERVER['HTTP_ORIGIN'];
             return $response
-                    ->withHeader('Access-Control-Allow-Origin', $http_origin)
+                    ->withHeader('Access-Control-Allow-Origin', '*')
                     ->withHeader('Access-Control-Allow-Credentials', 'true')
                     ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, session_id')
                     ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
