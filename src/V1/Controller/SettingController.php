@@ -2,6 +2,9 @@
 
 namespace Alfenory\Auth\V1\Controller;
 
+use Alfenory\Auth\V1\Lib\Returnlib;
+use Alfenory\Auth\V1\Lib\Webservicelib;
+
 class SettingController {
     
     protected $container;

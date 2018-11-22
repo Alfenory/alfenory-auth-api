@@ -8,7 +8,9 @@ use Alfenory\Auth\V1\Entity\UsergroupUser;
 use Alfenory\Auth\V1\Entity\Session;
 use Alfenory\Auth\V1\Entity\Role;
 use Alfenory\Auth\V1\Entity\RolePrivleg;
+
 use Alfenory\Auth\V1\Lib\Returnlib;
+use Alfenory\Auth\V1\Lib\Webservicelib;
 
 class UsergroupUserController {
     
@@ -53,7 +55,9 @@ class UsergroupUserController {
         if (UserController::has_privileg($request, $response, $args, "usergroupuser.post")) {
             $route = $request->getAttribute("route");
             $usergroup_id = $route->getArgument('usergroup_id');
+            
             if (UsergroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
+                $wslib = new Webservicelib();
                 $username  = $wslib->filter_string_request($request, "username");
                 if (User::is_double($username === false)) {
                     $email = $wslib->filter_email_request($request, "email");
