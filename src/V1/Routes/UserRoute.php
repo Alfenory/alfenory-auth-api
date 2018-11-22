@@ -11,6 +11,7 @@ class UserRoute {
             $this->get('/logout', \Alfenory\Auth\V1\Controller\UserController::class.":logout"); //TODO
             $this->get('/{securecode}/confirm', \Alfenory\Auth\V1\Controller\UserController::class.":confirm"); //TODO
             $this->get("/forget_password", \Alfenory\Auth\V1\Controller\UserController::class.":forget_password"); //TODO
+            $this->post("/is_double", \Alfenory\Auth\V1\Controller\UserController::class.":is_double");
         });
     }
 }
