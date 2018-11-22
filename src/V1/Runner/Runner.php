@@ -65,7 +65,6 @@ class Runner {
 
         $app->add(function ($req, $res, $next) {
             $response = $next($req, $res);
-            $http_origin = $_SERVER['HTTP_ORIGIN'];
             return $response
                     ->withHeader('Access-Control-Allow-Origin', '*')
                     ->withHeader('Access-Control-Allow-Credentials', 'true')

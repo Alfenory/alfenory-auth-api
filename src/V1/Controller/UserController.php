@@ -115,19 +115,6 @@ class UserController {
         }
     }
 
-    public static function username_exists($username) {
-        global $config, $entityManager;
-        if (UserController::has_privileg($request, $response, $args, "user.post")) {
-            $username_list = $entityManager->getRepository("\Alfenory\Auth\V1\Entity\User")->findBy(array("username" => $username));
-            if(count($membership_list) > 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public static function send_confirmation($user) {
         global $config;
         $url = $config["url"];
@@ -158,7 +145,7 @@ class UserController {
                 $username = $wslib->filter_string_request($request, "username");
                 $role_id = $wslib->filter_string_request($request, "role_id");
                 if ($wslib->print_error_if_needed($response) === false) {
-                    if (self::username_exists($username)) {
+                    if (self::is_double_logic($username) === false) {
                         $user = new \Alfenory\Auth\V1\Entity\User();
                         $user->setSalutation($salutation);
                         $user->setFirstName($firstname);
