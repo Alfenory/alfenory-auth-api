@@ -13,7 +13,7 @@ class Webservicelib {
         
         $params = $request->getQueryParams();
         
-        if($request->isPost() || $request->isPut()) {
+        if($request->isPost() || $request->isPut() || $_SERVER['REQUEST_METHOD'] === "POST" || $_SERVER['REQUEST_METHOD'] === "PUT") {
             $params = $request->getParsedBody();
             if($params === null) {
                 $params = $_REQUEST;
