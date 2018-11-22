@@ -260,7 +260,7 @@ class UserController {
             $wslib = new Webservicelib();
             $username = $wslib->filter_string_request($request, "username");
             if($wslib->print_error_if_needed($response) === false) {
-                $response->withJson(Returnlib::get_success(array("is_double" => self::is_double_logic($username))));
+                return $response->withJson(Returnlib::get_success(array("is_double" => self::is_double_logic($username))));
             } else {
                 return $response->withJson(Returnlib::user_parameter_missing($wslib->error_list));
             }
