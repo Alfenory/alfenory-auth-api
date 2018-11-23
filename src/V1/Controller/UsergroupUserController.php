@@ -13,7 +13,7 @@ use Alfenory\Auth\V1\Lib\Returnlib;
 use Alfenory\Auth\V1\Lib\Webservicelib;
 
 class UsergroupUserController {
-    
+
     protected $container;
 
     public function __construct($container) {
@@ -28,7 +28,7 @@ class UsergroupUserController {
         }
         return null;
     }
-    
+
     public static function get($request, $response, $args) {
         global $entityManager;
 
@@ -55,11 +55,10 @@ class UsergroupUserController {
         if (UserController::has_privileg($request, $response, $args, "usergroupuser.post")) {
             $route = $request->getAttribute("route");
             $usergroup_id = $route->getArgument('usergroup_id');
-            
             if (UsergroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
                 $wslib = new Webservicelib();
                 $username  = $wslib->filter_string_request($request, "username");
-                if (User::is_double($username === false)) {
+                if (UserController::is_double_logic($username) === false) {
                     $email = $wslib->filter_email_request($request, "email");
                     $salutation = $wslib->filter_string_request($request, "salutation");
                     $firstname = $wslib->filter_string_request($request, "firstname");
@@ -75,7 +74,7 @@ class UsergroupUserController {
                             $user->setLastName($lastname);
                             $user->setEmail($email);
                             $user->initSalt();
-                            $user->setPassword($user->get_password($user->geetSalt(), $password));
+                            $user->setPassword($user->get_password($user->getSalt(), $password));
                             $user->setActive($active);
                             $entityManager->persist($user);
                             $entityManager->flush();
@@ -83,17 +82,17 @@ class UsergroupUserController {
                             $ugu->setRoleId($role_id);
                             $ugu->setUserId($user->getId());
                             $ugu->setUsergroupId($usergroup_id);
-                            $entityManager->persist($user);
+                            $entityManager->persist($ugu);
                             $entityManager->flush();
                             return $response->withJson(Returnlib::get_success());
                         } else {
                             return $response->withJson(Returnlib::no_privileg());
                         }
                     } else {
-                        return $response->withJson(Returnlib::error('X', 'username already exists'));
+                        return $response->withJson(Returnlib::user_parameter_missing($wslib->error_list));
                     }
                 } else {
-                    return $response->withJson(Returnlib::user_parameter_missing($wslib->error_list));
+                    return $response->withJson(Returnlib::error('X', 'username already exists'));
                 }
             } else {
                 return $response->withJson(Returnlib::no_privileg());
@@ -103,13 +102,13 @@ class UsergroupUserController {
         }
         return $response;
     }
-    
+
     public static function update($request, $response, $args) {
         return $response;
     }
-    
+
     public static function delete($request, $response, $args) {
         return $response;
     }
-    
-}  
+
+}
