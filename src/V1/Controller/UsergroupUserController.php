@@ -77,14 +77,12 @@ class UsergroupUserController {
                             $user->initSalt();
                             $user->setPassword($user->get_password($user->getSalt(), $password));
                             $user->setActive($active);
-                            error_log(var_export($user, true));
                             $entityManager->persist($user);
                             $entityManager->flush();
                             $ugu = new \Alfenory\Auth\V1\Entity\UsergroupUser();
                             $ugu->setRoleId($role_id);
                             $ugu->setUserId($user->getId());
                             $ugu->setUsergroupId($usergroup_id);
-                            error_log(var_export($ugu, true));
                             $entityManager->persist($ugu);
                             $entityManager->flush();
                             return $response->withJson(Returnlib::get_success());
@@ -111,6 +109,35 @@ class UsergroupUserController {
     }
 
     public static function delete($request, $response, $args) {
+        global $entityManager;
+        if (UserController::has_privileg($request, $response, $args, "usergroupuser.delete")) {
+            $route = $request->getAttribute("route");
+            $usergroup_id = $route->getArgument('usergroup_id');
+            $user_id = $route->getArgument('user_id');
+            if (UsergroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
+                $usergroup_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('usergroup_id' => $usergroup_id, 'user_id' => $user_id));
+                if (count($usergroup_list) > 0) {
+                    $entityManager->remove($usergroup_list[0]);
+                    $entityManager->flush();
+                    
+                    $usergroup_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('user_id' => $user_id));
+                    if (count($usergroup_list) === 0) {
+                        $user_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('id' => $usergroup_list[0]->getUserId()));
+                        if (count($user_list) > 0) {
+                            $entityManager->remove($user_list[0]);
+                            $entityManager->flush();
+                        }
+                    }
+                    return $response->withJson(Returnlib::get_success());
+                } else {
+                    return $response->withJson(Returnlib::error('X', 'user not found'));
+                }
+            } else {
+                return $response->withJson(Returnlib::no_privileg());
+            }
+        } else {
+            return $response->withJson(Returnlib::no_privileg());
+        }
         return $response;
     }
 
