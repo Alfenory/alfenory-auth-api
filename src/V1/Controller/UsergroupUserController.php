@@ -125,8 +125,8 @@ class UsergroupUserController {
                         if (UserGroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
                             $usergroup_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('usergroup_id' => $usergroup_id, 'user_id' => $user_id));
                             if (count($usergroup_list) > 0) {
-                                $user = new \Alfenory\Auth\V1\Entity\User();
                                 $user_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\User')->findBy(array('id' => $user_id));
+                                $user = $user_list[0];
                                 $user->setSalutation($salutation);
                                 $user->setFirstName($firstname);
                                 $user->setLastName($lastname);
