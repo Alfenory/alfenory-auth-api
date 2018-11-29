@@ -77,12 +77,14 @@ class UsergroupUserController {
                             $user->initSalt();
                             $user->setPassword($user->get_password($user->getSalt(), $password));
                             $user->setActive($active);
+                            error_log(var_export($user, true));
                             $entityManager->persist($user);
                             $entityManager->flush();
                             $ugu = new \Alfenory\Auth\V1\Entity\UsergroupUser();
                             $ugu->setRoleId($role_id);
                             $ugu->setUserId($user->getId());
                             $ugu->setUsergroupId($usergroup_id);
+                            error_log(var_export($ugu, true));
                             $entityManager->persist($ugu);
                             $entityManager->flush();
                             return $response->withJson(Returnlib::get_success());
