@@ -58,7 +58,7 @@ class UsergroupUserController {
             if (UsergroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
                 $wslib = new Webservicelib();
                 $username  = $wslib->filter_string_request($request, "username");
-                if (UserController::is_double_logic($username) === false) {
+                if (UserController::is_double_logic($username, "") === false) {
                     $email = $wslib->filter_email_request($request, "email");
                     $salutation = $wslib->filter_string_request($request, "salutation");
                     $firstname = $wslib->filter_string_request($request, "firstname");
@@ -109,10 +109,11 @@ class UsergroupUserController {
         if (UserController::has_privileg($request, $response, $args, "usergroupuser.put")) {
             $route = $request->getAttribute("route");
             $usergroup_id = $route->getArgument('usergroup_id');
+            $user_id = $route->getArgument('user_id');
             if (UsergroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
                 $wslib = new Webservicelib();
                 $username  = $wslib->filter_string_request($request, "username");
-                if (UserController::is_double_logic($username) === false) {
+                if (UserController::is_double_logic($username, $user_id) === false) {
                     $email = $wslib->filter_email_request($request, "email");
                     $salutation = $wslib->filter_string_request($request, "salutation");
                     $firstname = $wslib->filter_string_request($request, "firstname");
@@ -122,24 +123,30 @@ class UsergroupUserController {
                     $active = $wslib->filter_int_request($request, "active");
                     if ($wslib->print_error_if_needed($response) === false) {
                         if (UserGroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
-                            $user = new \Alfenory\Auth\V1\Entity\User();
-                            $user->setSalutation($salutation);
-                            $user->setFirstName($firstname);
-                            $user->setLastName($lastname);
-                            $user->setEmail($email);
-                            $user->setUsername($username);
-                            $user->initSalt();
-                            $user->setPassword($user->get_password($user->getSalt(), $password));
-                            $user->setActive($active);
-                            $entityManager->persist($user);
-                            $entityManager->flush();
-                            $ugu = new \Alfenory\Auth\V1\Entity\UsergroupUser();
-                            $ugu->setRoleId($role_id);
-                            $ugu->setUserId($user->getId());
-                            $ugu->setUsergroupId($usergroup_id);
-                            $entityManager->persist($ugu);
-                            $entityManager->flush();
-                            return $response->withJson(Returnlib::get_success());
+                            $usergroup_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('usergroup_id' => $usergroup_id, 'user_id' => $user_id));
+                            if (count($usergroup_list) > 0) {
+                                $user = new \Alfenory\Auth\V1\Entity\User();
+                                $user_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\User')->findBy(array('id' => $user_id));
+                                $user->setSalutation($salutation);
+                                $user->setFirstName($firstname);
+                                $user->setLastName($lastname);
+                                $user->setEmail($email);
+                                $user->setUsername($username);
+                                if ($password !== "") {
+                                    $user->initSalt();
+                                    $user->setPassword($user->get_password($user->getSalt(), $password));
+                                }
+                                $user->setActive($active);
+                                $entityManager->persist($user);
+                                $entityManager->flush();
+                                $ugu = $usergroup_list[0];
+                                $ugu->setRoleId($role_id);
+                                $entityManager->persist($ugu);
+                                $entityManager->flush();
+                                return $response->withJson(Returnlib::get_success());   
+                            } else {
+                                return $response->withJson(Returnlib::error('X', 'user_id not found for mandatory'));
+                            }
                         } else {
                             return $response->withJson(Returnlib::no_privileg());
                         }
