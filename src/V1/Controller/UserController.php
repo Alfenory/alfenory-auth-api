@@ -273,6 +273,9 @@ class UserController {
 
     public static function is_double_logic($username, $user_id = '') {
         global $config, $entityManager;
+        error_log("is_double_logic");
+        error_log("user_name:".$username);
+        error_log("user_id:".$user_id);
         $user_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\User')->findBy(array('username' => $username));
         if ($user_id === '' && count($user_list) > 0) {
             return true;
