@@ -148,7 +148,7 @@ class UserController {
                 $username = $wslib->filter_string_request($request, "username");
                 $role_id = $wslib->filter_string_request($request, "role_id");
                 if ($wslib->print_error_if_needed($response) === false) {
-                    if (self::is_double_logic($username) === false) {
+                    if (self::is_double_logic($username, "") === false) {
                         $user = new \Alfenory\Auth\V1\Entity\User();
                         $user->setSalutation($salutation);
                         $user->setFirstName($firstname);
@@ -260,8 +260,9 @@ class UserController {
         if(UserController::has_privileg($request, $response, $args, "user.get")) {
             $wslib = new Webservicelib();
             $username = $wslib->filter_string_request($request, "username");
+            $user_id = $wslib->filter_string_request($request, "user_id");
             if($wslib->print_error_if_needed($response) === false) {
-                return $response->withJson(Returnlib::get_success(array("is_double" => self::is_double_logic($username))));
+                return $response->withJson(Returnlib::get_success(array("is_double" => self::is_double_logic($username, $user_id))));
             } else {
                 return $response->withJson(Returnlib::user_parameter_missing($wslib->error_list));
             }
@@ -270,11 +271,22 @@ class UserController {
         }
     }
 
-    public static function is_double_logic($username) {
+    public static function is_double_logic($username, $user_id = '') {
         global $config, $entityManager;
-        $user_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\User')->findBy(array('username' => $username)); 
-        if (count($user_list) > 0) {
+        $user_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\User')->findBy(array('username' => $username));
+        if ($user_id === '' && count($user_list) > 0) {
             return true;
+        }
+        if ($user_id !== '') {
+            for ($i=0; $i<count($user_list); $i++) {
+                if ($user_list[$i]->getId() === $user_id) {
+                    array_splice($user_list, $i);
+                    $i--;
+                }
+            }
+            if (count($user_list) > 0) {
+                return true;
+            }
         }
         return false;
     }
