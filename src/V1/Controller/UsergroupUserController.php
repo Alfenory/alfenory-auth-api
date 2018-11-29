@@ -110,12 +110,10 @@ class UsergroupUserController {
 
     public static function delete($request, $response, $args) {
         global $entityManager;
-        error_log("user delete");
         if (UserController::has_privileg($request, $response, $args, "usergroupuser.delete")) {
             $route = $request->getAttribute("route");
             $usergroup_id = $route->getArgument('usergroup_id');
             $user_id = $route->getArgument('user_id');
-            error_log("insert1");
             if (UsergroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
                 $usergroup_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('usergroup_id' => $usergroup_id, 'user_id' => $user_id));
                 if (count($usergroup_list) > 0) {
