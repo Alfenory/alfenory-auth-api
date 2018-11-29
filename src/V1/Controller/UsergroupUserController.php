@@ -118,22 +118,17 @@ class UsergroupUserController {
             error_log("insert1");
             if (UsergroupController::has_usergroup_priv($request, $response, $args, $usergroup_id)) {
                 $usergroup_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('usergroup_id' => $usergroup_id, 'user_id' => $user_id));
-                
-            error_log("insert2");
                 if (count($usergroup_list) > 0) {
                     $entityManager->remove($usergroup_list[0]);
                     $entityManager->flush();
-                    
                     $usergroup_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('user_id' => $user_id));
-                    if (count($usergroup_list) === 0) {
+                    if (count($usergroup_list) > 0) {
                         $user_list = $entityManager->getRepository('Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('id' => $usergroup_list[0]->getUserId()));
                         if (count($user_list) > 0) {
                             $entityManager->remove($user_list[0]);
                             $entityManager->flush();
                         }
                     }
-                    
-            error_log("inserte");
                     return $response->withJson(Returnlib::get_success());
                 } else {
                     return $response->withJson(Returnlib::error('X', 'user not found'));
