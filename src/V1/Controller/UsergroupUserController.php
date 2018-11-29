@@ -73,6 +73,7 @@ class UsergroupUserController {
                             $user->setFirstName($firstname);
                             $user->setLastName($lastname);
                             $user->setEmail($email);
+                            $user->setUsername($username);
                             $user->initSalt();
                             $user->setPassword($user->get_password($user->getSalt(), $password));
                             $user->setActive($active);
