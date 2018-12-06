@@ -136,4 +136,35 @@ class UsergroupController {
         return $response;
     }
     
+    public static function changepassword($request, $response, $args) {
+        global $config, $entityManager;
+        if(UserController::has_privileg($request, $response, $args, "user.changepassword")) {
+            $wslib = new Webservicelib();
+            $user = $wslib->get_user_or_return_error($request, $response);
+            $user_id = $user->getId();
+            $newpassword = $request->getParam('newpassword');
+            $oldpassword = $request->getParam('oldpassword');
+            if($wslib->print_error_if_needed($response) === false) {
+                $usergroup_list = $entityManager->getRepository('\Alfenory\Auth\V1\Entity\Session')->findBy(array('id' => $session_id));
+                if (count($usergroup_list) > 0) {
+                    if (self::has_usergroup_priv($request, $response, $args, $usergroup_id) === true) {
+                        $usergroup = $usergroup_list[0];
+                        $usergroup->setName($name);
+                        $entityManager->persist($usergroup);
+                        $entityManager->flush();
+                    } else {
+                        return $response->withJson(Returnlib::no_privileg());   
+                    }
+                } else {
+                    return $response->withJson(Returnlib::object_not_found("mandatory", $usergroup_id));  
+                }
+                
+            } else {
+                return $response->withJson(Returnlib::user_parameter_missing($wslib->error_list));
+            }
+        } else {
+            return $response->withJson(Returnlib::no_privileg());    
+        }
+        return $response;
+    }
 }  

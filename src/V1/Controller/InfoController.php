@@ -34,6 +34,7 @@ class InfoController {
         $priv_list[] = "usergroupuser.crud";
         $priv_list[] = "usergroupattribute.crud";
         $priv_list[] = "user.crud";
+        $priv_list[] = "user.changepassword";
         return $priv_list;
     }
     
