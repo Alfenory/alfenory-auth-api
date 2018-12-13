@@ -304,6 +304,7 @@ class UserController {
                     $user->setPassword($user->get_password($user->getSalt(), $newpassword));
                     $entityManager->persist($user);
                     $entityManager->flush();
+                    return $response->withJson(Returnlib::get_success());
                 } else {
                     return $response->withJson(Returnlib::user_parameter_missing($wslib->error_list));  
                 }
