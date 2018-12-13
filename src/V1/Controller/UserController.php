@@ -291,4 +291,27 @@ class UserController {
         return false;
     }
 
+    public static function changepassword($request, $response, $args) {
+        global $config, $entityManager;
+        if(UserController::has_privileg($request, $response, $args, "user.changepassword")) {
+            $wslib = new Webservicelib();
+            $user = $wslib->get_user_or_return_error($request, $response);
+            $user_id = $user->getId();
+            $newpassword = $request->getParam('newpassword');
+            $oldpassword = $request->getParam('oldpassword');
+            if($wslib->print_error_if_needed($response) === false) {
+                if ($user->check_password($oldpassword) === true) {
+                    $user->setPassword($user->get_password($user->getSalt(), $newpassword));
+                } else {
+                    return $response->withJson(Returnlib::user_parameter_missing($wslib->error_list));  
+                }
+            } else {
+                return $response->withJson(Returnlib::user_parameter_missing($wslib->error_list));
+            }
+        } else {
+            return $response->withJson(Returnlib::no_privileg());    
+        }
+        return $response;
+    }
+
 }
