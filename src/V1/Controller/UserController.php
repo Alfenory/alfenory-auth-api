@@ -302,6 +302,8 @@ class UserController {
             if($wslib->print_error_if_needed($response) === false) {
                 if ($user->check_password($oldpassword) === true) {
                     $user->setPassword($user->get_password($user->getSalt(), $newpassword));
+                    $entityManager->persist($user);
+                    $entityManager->flush();
                 } else {
                     return $response->withJson(Returnlib::user_parameter_missing($wslib->error_list));  
                 }
