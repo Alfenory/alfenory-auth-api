@@ -22,7 +22,6 @@ class UsergroupRoute {
                 $this->group('/user', function () {
                     $this->get("/", \Alfenory\Auth\V1\Controller\UsergroupUserController::class.":get");
                     $this->post("/", \Alfenory\Auth\V1\Controller\UsergroupUserController::class.":create");
-                    $this->post("/changepassword", \Alfenory\Auth\V1\Controller\UsergroupUserController::class.":changepassword");
                     $this->post("/is_double", \Alfenory\Auth\V1\Controller\UserController::class.":is_double");
                     $this->group('/{user_id}', function () {
                         $this->put("/", \Alfenory\Auth\V1\Controller\UsergroupUserController::class.":update");
@@ -38,6 +37,7 @@ class UsergroupRoute {
                     }); 
                 });
             });
+            $this->post("/user/changepassword", \Alfenory\Auth\V1\Controller\UsergroupUserController::class.":changepassword");
         });
     }
 }
