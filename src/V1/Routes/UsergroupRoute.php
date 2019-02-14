@@ -37,8 +37,10 @@ class UsergroupRoute {
                     }); 
                 });
             });
-            $this->group('/user/changepassword', function () {
-                $this->post("/", \Alfenory\Auth\V1\Controller\UserController::class.":changepassword");
+            $this->group('/user', function () {
+                $this->group('/changepassword', function () {
+                    $this->post("", \Alfenory\Auth\V1\Controller\UserController::class.":changepassword");
+                });
             });
         });
     }

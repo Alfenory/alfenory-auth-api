@@ -99,7 +99,8 @@ class UserController {
             
             if($user !== null) {
                 self::$userId = $user->getId();
-                $memberhip_id = $args["membership_id"];
+                $route = $request->getAttribute('route');
+                $memberhip_id = $route->getArgument('membership_id');
                 $membership_list = $entityManager->getRepository("\Alfenory\Auth\V1\Entity\UsergroupUser")->findBy(array("id" => $memberhip_id, "user_id" => $user->getId()));
                 $pages = array();
                 if(count($membership_list) > 0) {
