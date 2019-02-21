@@ -3,7 +3,6 @@
 namespace Alfenory\Auth\V1\Entity;
 
 use Doctrine\ORM\Annotation as ORM;
-use Doctrine\ORM\Mapping as MAPPING;
 
 /**
  * user
@@ -12,7 +11,7 @@ use Doctrine\ORM\Mapping as MAPPING;
  * @ORM\Entity
  **/
 class User implements \JsonSerializable {
-    /** @ORM\Id @ORM\Column(type="guid") @MAPPING\GeneratedValue(strategy="UUID") */
+    /** @ORM\Id @ORM\Column(type="guid") */
     private $id;
     public function getId() {
         return $this->id;
@@ -68,20 +67,16 @@ class User implements \JsonSerializable {
     public function getActive() { return $this->active; }
     public function setActive($active) { $this->active = $active; }
     
-    public static function get_guid() {
-        if (function_exists('com_create_guid') === true) {
-            return trim(com_create_guid(), '{}');
-        }
-
-        return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
-    }
-
     public function get_password($salt, $password) {
         return hash("sha512", $salt . $password, false);
     }
 
     public function initSalt() {
-        $this->salt = self::get_guid();
+        $this->salt = \Alfenory\Auth\V1\Guid::guid(); 
+    }
+
+    function __construct() {
+        $this->id = \Alfenory\Auth\V1\Guid::guid(); 
     }
 
     public function check_password($password) {
@@ -89,7 +84,7 @@ class User implements \JsonSerializable {
         $salt = $this->salt;
         if ($salt == "" || $salt == null) {
             if ($this->password == md5($password)) {
-                $this->salt = $this->get_guid();
+                $this->salt = \Alfenory\Auth\V1\Guid::guid();
                 $this->password = $this->get_password($this->salt, $password);
                 $entityManager->persist($this);
                 $entityManager->flush();

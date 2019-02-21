@@ -2,7 +2,6 @@
 namespace Alfenory\Auth\V1\Entity;
 
 use Doctrine\ORM\Annotation as ORM;
-use Doctrine\ORM\Mapping as MAPPING;
 
 /**
  * role_privileg
@@ -11,7 +10,7 @@ use Doctrine\ORM\Mapping as MAPPING;
  * @ORM\Entity
  **/
 class RolePrivileg implements \JsonSerializable {
-    /** @ORM\Id @ORM\Column(type="guid") @MAPPING\GeneratedValue(strategy="UUID") */
+    /** @ORM\Id @ORM\Column(type="guid")*/
     private $id;
     public function getId() {
         return $this->id;
@@ -33,6 +32,10 @@ class RolePrivileg implements \JsonSerializable {
     }
     public function setPrivileg($privileg) {
         $this->privileg = $privileg;
+    }
+
+    function __construct() {
+        $this->id = \Alfenory\Auth\V1\Guid::guid(); 
     }
 
     public function jsonSerialize() {

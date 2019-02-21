@@ -1,7 +1,6 @@
 <?php
 namespace Alfenory\Auth\V1\Entity;
 use Doctrine\ORM\Annotation as ORM;
-use Doctrine\ORM\Mapping as MAPPING;
 
 /**
  * session
@@ -10,7 +9,7 @@ use Doctrine\ORM\Mapping as MAPPING;
  * @ORM\Entity
  **/
 class Session {
-    /** @ORM\Id @ORM\Column(type="guid") @MAPPING\GeneratedValue(strategy="UUID") */
+    /** @ORM\Id @ORM\Column(type="guid") */
     private $id;
     public function getId() {
         return $this->id;
@@ -28,6 +27,7 @@ class Session {
     
     function __construct() {
         $this->duetime = new \DateTime("now");
+        $this->id = \Alfenory\Auth\V1\Guid::guid(); 
     }
     
     public static function create_session($user_id) {

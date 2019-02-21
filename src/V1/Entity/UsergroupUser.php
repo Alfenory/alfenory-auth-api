@@ -3,7 +3,6 @@
 namespace Alfenory\Auth\V1\Entity;
 
 use Doctrine\ORM\Annotation as ORM;
-use Doctrine\ORM\Mapping as MAPPING;
 
 /**
  * usergroupuser
@@ -12,7 +11,7 @@ use Doctrine\ORM\Mapping as MAPPING;
  * @ORM\Entity
  **/
 class UsergroupUser implements \JsonSerializable {
-    /** @ORM\Id @ORM\Column(type="guid") @MAPPING\GeneratedValue(strategy="UUID") */
+    /** @ORM\Id @ORM\Column(type="guid")*/
     private $id;
     public function getId() {
         return $this->id;
@@ -43,6 +42,10 @@ class UsergroupUser implements \JsonSerializable {
     }
     public function setRoleId($role_id) {
         $this->role_id = $role_id;
+    }
+
+    function __construct() {
+        $this->id = \Alfenory\Auth\V1\Guid::guid(); 
     }
 
     // no db relation

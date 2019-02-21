@@ -156,7 +156,7 @@ class UserController {
                         $user->setLastName($lastname);
                         $user->setEmail($email);
                         $user->setUsername($username);
-                        $user->setSecurecode(\Alfenory\Auth\V1\Entity\User::get_guid());
+                        $user->setSecurecode(\Alfenory\Auth\V1\Lib\Guid::guid());
                         $user->getSecurecodeCreated(date("Y-m-d H:i:s"));
                         $user->setActive(0);
                         $entityManager->persist($user);

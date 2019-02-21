@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as MAPPING;
  * @ORM\Entity
  **/
 class UsergroupAttribute implements \JsonSerializable {
-    /** @ORM\Id @ORM\Column(type="guid") @MAPPING\GeneratedValue(strategy="UUID") */
+    /** @ORM\Id @ORM\Column(type="guid") */
     private $id;
     public function getId() {
         return $this->id;
@@ -29,6 +29,10 @@ class UsergroupAttribute implements \JsonSerializable {
     public function getValue() { return $this->value; }
     public function setValue($value) { $this->value = $value; }
     
+    function __construct() {
+        $this->id = \Alfenory\Auth\V1\Guid::guid(); 
+    }
+
     public static function get_list_by_usergroup_id($usergroup_id) {
         return usergroup_attribute::get_list_from_instance(new usergroup_attribute(), array("usergroup_id"), array($usergroup_id));
     }

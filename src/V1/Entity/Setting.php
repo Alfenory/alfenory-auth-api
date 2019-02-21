@@ -2,7 +2,6 @@
 
 namespace Alfenory\Auth\V1\Entity;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping as MAPPING;
 
 /**
  * setting
@@ -11,7 +10,7 @@ use Doctrine\ORM\Mapping as MAPPING;
  * @ORM\Entity
  **/
 class Setting implements \JsonSerializable {
-    /** @ORM\Id @ORM\Column(type="guid") @MAPPING\GeneratedValue(strategy="UUID") */
+    /** @ORM\Id @ORM\Column(type="guid") */
     private $id;
     public function getId() {
         return $this->id;
@@ -33,6 +32,10 @@ class Setting implements \JsonSerializable {
     public function getUserId() { return $this->user_id; }
     public function setUserId($usergroup_id) { $this->user_id = $usergroup_id; }
     
+    function __construct() {
+        $this->id = \Alfenory\Auth\V1\Guid::guid(); 
+    }
+
     public function jsonSerialize() {
         $vars = get_object_vars($this);
         return $vars;
