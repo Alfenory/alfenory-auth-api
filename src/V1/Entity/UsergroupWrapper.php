@@ -1,7 +1,7 @@
 <?php
 
 namespace Alfenory\Auth\V1\Entity;
-use Doctrine\ORM\Annotation as ORM;
+
 /**
  * This is a wrapper for usergroup. It has own logic for handling
  * @author alexander höhling

@@ -3,6 +3,7 @@
 namespace Alfenory\Auth\V1\Entity;
 
 use Doctrine\ORM\Annotation as ORM;
+use Doctrine\ORM\Mapping as MAPPING;
 
 /**
  * user
@@ -11,7 +12,7 @@ use Doctrine\ORM\Annotation as ORM;
  * @ORM\Entity
  **/
 class User implements \JsonSerializable {
-    /** @ORM\Id @ORM\Column(type="guid") @ORM\GeneratedValue(strategy="UUID") */
+    /** @ORM\Id @ORM\Column(type="guid") @MAPPING\GeneratedValue(strategy="UUID") */
     private $id;
     public function getId() {
         return $this->id;
