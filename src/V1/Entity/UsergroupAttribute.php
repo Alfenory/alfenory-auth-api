@@ -2,6 +2,8 @@
 
 namespace Alfenory\Auth\V1\Entity;
 
+use Doctrine\ORM\Annotation as ORM;
+
 /**
  * usergroupattribute
  * 
