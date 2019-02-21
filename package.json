@@ -1,6 +1,6 @@
 {
     "name": "alfenory_auth_api",
-    "version": "1.0.136",
+    "version": "1.0.141",
     "license": "gpl",
     "description": "alfenory plattform authorisation api",
     "keywords": [
@@ -16,6 +16,7 @@
         "gulp-bump": "^3.1.3",
         "gulp-git": "^2.9.0",
         "jsdom": "9.12.0",
+        "natives": "^1.1.6",
         "unit.js": "2.0.0"
     },
     "require": {

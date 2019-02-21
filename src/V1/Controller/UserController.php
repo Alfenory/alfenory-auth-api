@@ -36,12 +36,12 @@ class UserController {
             for($i=0;$i<count($users);$i++) {
                 if($users[0]->check_password($password)) {
                     $id = session::create_session($users[0]->getId());
-                    return $response->withJson(\Alfenory\Auth\V1\Lib\Returnlib::get_success(array("session_id" => $id)));
+                    return $response->withJson(Returnlib::get_success(array("session_id" => $id)));
                 }
             }
         }
                 
-        return $response->withJson(\Alfenory\Auth\V1\Lib\Returnlib::wrong_login());
+        return $response->withJson(Returnlib::wrong_login());
     }
     
     public static function session($request, $response, $args) {
@@ -201,20 +201,24 @@ class UserController {
         $usergroup_user_list = $entityManager->getRepository('\Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('user_id' => $user->getId()));
         
         for($i=0;$i<count($usergroup_user_list);$i++) {
+            error_log("i:".$i);
             $usergroup_user = $usergroup_user_list[$i];
             if($usergroup_user->getUsergroupId() == "0") {
-                $usergroup_user_list[$i]->usergroup_name = "Hauptstruktur";
+                error_log("lev1");
+                $usergroup_user_list[$i]->setUsergroupName("Hauptstruktur");
             }
             else {
-                $usergroup = $entityManager->getRepository('\Alfenory\Auth\V1\Entity\Usergroup')->findBy(array('id' => $usergroup_user->getUsergroupId()));
-                if(count($usergroup) > 0) {
-                    $usergroup_user_list[$i]->usergroup_name = $usergroup[0]->getName();
+                $usergroup_list = $entityManager->getRepository('\Alfenory\Auth\V1\Entity\Usergroup')->findBy(array('id' => $usergroup_user->getUsergroupId()));
+                error_log("count:".count($usergroup_list));
+                if(count($usergroup_list) > 0) {
+                    $usergroup_user_list[$i]->setUsergroupName($usergroup_list[0]->getName());
                 }
             }
         }
+
         return $response->withJson(Returnlib::get_success($usergroup_user_list));
-    }
-    
+
+    }    
     public static function getUsergroupBuffer() {
         return self::$usergroupBuffer;
     }

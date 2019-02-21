@@ -42,6 +42,15 @@ class UsergroupUser implements \JsonSerializable {
     public function setRoleId($role_id) {
         $this->role_id = $role_id;
     }
+
+    // no db relation
+    private $usergroup_name;
+    public function getUsergroupName() {
+        return $this->usergroup_name;
+    }
+    public function setUsergroupName($usergroup_name) {
+        $this->usergroup_name = $usergroup_name;
+    }
     
     public function jsonSerialize() {
         $vars = get_object_vars($this);

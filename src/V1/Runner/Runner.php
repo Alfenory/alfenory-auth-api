@@ -24,6 +24,7 @@ class Runner {
             'user' => $config["db"]["username"],
             'password' => $config["db"]["password"],
             'dbname' => $config["db"]["name"],
+            'charset' => 'utf8mb4'
         );
         
         AnnotationRegistry::registerLoader('class_exists');
@@ -57,6 +58,15 @@ class Runner {
         ];
         
         $app = new \Slim\App($slim_config);
+        $c = $app->getContainer();
+        $c['errorHandler'] = function ($c) {
+            return function ($request, $response, $exception) use ($c) {
+                error_log($exception->getMessage());
+                return $response->withStatus(500)
+                    ->withHeader('Content-Type', 'text/html')
+                    ->write('Something went wrong!');
+            };
+        };
         $app->getContainer()['environment'] = $env;
 
         $app->options('/{routes:.+}', function ($request, $response, $args) {
@@ -71,7 +81,7 @@ class Runner {
                     ->withHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin, Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, session_id')
                     ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         });
-        
+
         if($config["api_url_path"] != "") {
             $app->group("/".$config["api_url_path"], function() {
 
@@ -93,12 +103,12 @@ class Runner {
                 new $name($app);
             };
         }
-
+        
         $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
             $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
             return $handler($req, $res);
         });
-        
+
         $app->run();
         
     }
