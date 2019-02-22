@@ -27,7 +27,7 @@ class Session {
     
     function __construct() {
         $this->duetime = new \DateTime("now");
-        $this->id = \Alfenory\Auth\V1\Guid::guid(); 
+        $this->id = \Alfenory\Auth\V1\Lib\Guid::guid(); 
     }
     
     public static function create_session($user_id) {
