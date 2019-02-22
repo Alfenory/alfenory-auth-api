@@ -83,6 +83,7 @@ class RoleController {
     public static function create($request, $response, $args) {
         global $entityManager;
         if (UserController::has_privileg($request, $response, $args, "role.post")) {
+            error_log("create");
             $wslib = new Webservicelib();
             $name = $wslib->filter_string_request($request, "name");
             if($wslib->print_error_if_needed($response) === false) {

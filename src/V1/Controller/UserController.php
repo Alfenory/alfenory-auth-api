@@ -201,15 +201,12 @@ class UserController {
         $usergroup_user_list = $entityManager->getRepository('\Alfenory\Auth\V1\Entity\UsergroupUser')->findBy(array('user_id' => $user->getId()));
         
         for($i=0;$i<count($usergroup_user_list);$i++) {
-            error_log("i:".$i);
             $usergroup_user = $usergroup_user_list[$i];
             if($usergroup_user->getUsergroupId() == "0") {
-                error_log("lev1");
                 $usergroup_user_list[$i]->setUsergroupName("Hauptstruktur");
             }
             else {
                 $usergroup_list = $entityManager->getRepository('\Alfenory\Auth\V1\Entity\Usergroup')->findBy(array('id' => $usergroup_user->getUsergroupId()));
-                error_log("count:".count($usergroup_list));
                 if(count($usergroup_list) > 0) {
                     $usergroup_user_list[$i]->setUsergroupName($usergroup_list[0]->getName());
                 }
