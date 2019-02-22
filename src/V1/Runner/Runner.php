@@ -67,6 +67,14 @@ class Runner {
                     ->write('Something went wrong!');
             };
         };
+        $c['phpErrorHandler'] = function ($c) {
+            return function ($request, $response, $exception) use ($c) {
+                error_log($exception->getMessage());
+                return $response->withStatus(500)
+                    ->withHeader('Content-Type', 'text/html')
+                    ->write("Something went wrong!");
+            };
+        };
         $app->getContainer()['environment'] = $env;
 
         $app->options('/{routes:.+}', function ($request, $response, $args) {
