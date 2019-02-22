@@ -33,7 +33,7 @@ class Setting implements \JsonSerializable {
     public function setUserId($usergroup_id) { $this->user_id = $usergroup_id; }
     
     function __construct() {
-        $this->id = \Alfenory\Auth\V1\Guid::guid(); 
+        $this->id = \Alfenory\Auth\V1\Lib\Guid::guid(); 
     }
 
     public function jsonSerialize() {
