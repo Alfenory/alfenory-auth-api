@@ -172,7 +172,11 @@ class Webservicelib {
         if(isset($headers["session_id"])) {
             $session_id = $headers["session_id"];
         }
-        if($request->getAttribute("session_id") !== null && $request->getAttribute("session_id") != "") {
+        // Removed because it does not work
+        //if($request->getAttribute("session_id") !== null && $request->getAttribute("session_id") != "") {
+        //    $session_id = $request->getAttribute("session_id");
+        //}
+        if($request->getParam("session_id") !== null && $request->getParam("session_id") != "") {
             $session_id = $request->getAttribute("session_id");
         }
         
