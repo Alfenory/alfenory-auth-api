@@ -1,5 +1,6 @@
 /vendor/
 /node_modules/
+.gitignore
 gulpfile.js
 package-lock.json
 composer.lock
