@@ -45,7 +45,7 @@ class UsergroupUser implements \JsonSerializable {
     }
 
     function __construct() {
-        $this->id = \Alfenory\Auth\V1\Guid::guid(); 
+        $this->id = \Alfenory\Auth\V1\Lib\Guid::guid(); 
     }
 
     // no db relation

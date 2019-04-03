@@ -84,7 +84,7 @@ class User implements \JsonSerializable {
         $salt = $this->salt;
         if ($salt == "" || $salt == null) {
             if ($this->password == md5($password)) {
-                $this->salt = \Alfenory\Auth\V1\Guid::guid();
+                $this->salt = \Alfenory\Auth\V1\Lib\Guid::guid();
                 $this->password = $this->get_password($this->salt, $password);
                 $entityManager->persist($this);
                 $entityManager->flush();

@@ -177,15 +177,17 @@ class Webservicelib {
         //    $session_id = $request->getAttribute("session_id");
         //}
         if($request->getParam("session_id") !== null && $request->getParam("session_id") != "") {
-            $session_id = $request->getAttribute("session_id");
+            $session_id = $request->getParam("session_id");
+            $session_id = str_replace("/", "", $session_id);
         }
-        
+
         if($session_id === null || strlen($session_id) === 0) {
             $response->getBody()->write(json_encode(Returnlib::session_invalid()));
             return null;
         }
-        
+
         $session_obj = \Alfenory\Auth\V1\Entity\Session::get_session($session_id);
+        
         $user = self::get_user($session_obj);
 
         if($user !== null) {

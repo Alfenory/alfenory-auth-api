@@ -28,7 +28,7 @@ class Usergroup implements \JsonSerializable {
     public function setUsergroupId($usergroup_id) { $this->usergroup_id = $usergroup_id; }
     
     function __construct() {
-        $this->id = \Alfenory\Auth\V1\Guid::guid(); 
+        $this->id = \Alfenory\Auth\V1\Lib\Guid::guid(); 
     }
 
     public static function get_special_group() {

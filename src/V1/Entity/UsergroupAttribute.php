@@ -30,7 +30,7 @@ class UsergroupAttribute implements \JsonSerializable {
     public function setValue($value) { $this->value = $value; }
     
     function __construct() {
-        $this->id = \Alfenory\Auth\V1\Guid::guid(); 
+        $this->id = \Alfenory\Auth\V1\Lib\Guid::guid(); 
     }
 
     public static function get_list_by_usergroup_id($usergroup_id) {
